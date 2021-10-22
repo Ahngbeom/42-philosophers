@@ -6,21 +6,22 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 18:20:36 by bahn              #+#    #+#              #
-#    Updated: 2021/10/21 18:34:08 by bahn             ###   ########.fr        #
+#    Updated: 2021/10/22 18:13:48 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -gcc
+CFLAGS = -Wall -Werror -Wextra -g
 INCFLAGS = -I./includes
 
 RM = rm -fv
 
 SRCS_PATH = ./srcs/
-SRCS_NAME = philosophers.c
-SRCS = $(addprefix $(SRCS_PATH), $(SRCS))
+SRCS_NAME = main.c philosophers.c \
+			ft_atoi.c ft_lstnew.c ft_lstadd_back.c ft_lstlast.c ft_lstsize.c
+SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)
@@ -29,7 +30,7 @@ all : $(NAME)
 		$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
 
 $(NAME) : $(OBJS)
-		$(CC) $(CFLAGS) $(INCFLAGS) $^ -o $@
+		$(CC) $(CFLAGS) $(INCFLAGS) $^ -lpthread -o $@
 
 clean : 
 		$(RM) $(OBJS)
