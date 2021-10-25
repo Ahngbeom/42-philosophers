@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/23 01:47:00 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/25 20:36:55 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,21 @@ struct timeval timestamp_end;
 
 void	*ft_pthread(void *data)
 {
-	int	time;
-	int diff;
-
-	printf("%d\n", ((t_philo *)data)->id);
+	int lapse_ms;
 
 	pthread_mutex_lock(&mutex_lock);
-	time = 0;
-	diff = 0;
-	while (time < 500)
+	lapse_ms = 0;
+	while (1)
 	{
+		if (((t_philo *)data)->time_to_die <= 0)
+			break;
 		usleep(1000);
-		time++;
 		gettimeofday(&timestamp_end, NULL);
-		diff = (timestamp_end.tv_usec / 1000) - (timestamp_start.tv_usec / 1000);
-		// printf("%d %d is eating\n", diff, ((t_philo *)data)->id);
-		(void)diff;
-		(void)data;
+		lapse_ms = ((timestamp_end.tv_usec) - (timestamp_start.tv_usec)) / 1000;
+		((t_philo *)data)->time_to_die -= 1;
+		printf("start : %ldus, end : %ldus\n", timestamp_start.tv_usec, timestamp_end.tv_usec);
+		printf("%dms : [%d] is eating (time to die : %d)\n", lapse_ms, ((t_philo *)data)->id, ((t_philo *)data)->time_to_die);
+		
 		// philosopher_status((t_list *)data);
 	}
 	pthread_mutex_unlock(&mutex_lock);
@@ -43,7 +41,7 @@ void	*ft_pthread(void *data)
 
 int	main(int argc, char *argv[])
 {
-	t_list philos;
+	t_list *philos;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -61,15 +59,14 @@ int	main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	else
-		philosopher_init(argc, argv, &philos, ft_atoi(argv[1]));
+		philos = philosopher_init(argc, argv, ft_atoi(argv[1]));
 		
 	gettimeofday(&timestamp_start, NULL);
 
 	pthread_mutex_init(&mutex_lock, NULL);
-	printf("%d\n", ((t_philo *)philos.content)->id);
-	pthread_create(&philos.pth_id, NULL, ft_pthread, philos.content);
-	pthread_join(philos.pth_id, NULL);
-	printf("%ld\n", philos.pth_id);
+	pthread_create(&philos->pth_id, NULL, ft_pthread, philos->content);
+	pthread_join(philos->pth_id, NULL);
+	// printf("%ld\n", philos->pth_id);
 
 	gettimeofday(&timestamp_end, NULL);
 	

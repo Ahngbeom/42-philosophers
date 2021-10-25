@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/23 01:21:14 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/25 17:59:23 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ struct s_philo
 	int must_eat;
 };
 
-void	philosopher_init(int argc, char **argv, t_list *lst, int number_of_philos);
+t_list *philosopher_init(int argc, char **argv, int number_of_philos);
 t_philo *create_philosopher(int argc, char **argv, int id);
 void	philosopher_status(t_list *philos);
 

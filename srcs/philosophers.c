@@ -6,26 +6,28 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/23 01:18:46 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/25 20:25:43 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	philosopher_init(int argc, char **argv, t_list *lst, int number_of_philos)
+t_list	*philosopher_init(int argc, char **argv, int number_of_philos)
 {
+	t_list *philos;
 	int i;
 
 	i = 0;
 	while (++i <= number_of_philos)
 	{
 		if (i == 1)
-			lst = ft_lstnew(create_philosopher(argc, argv, i));
+			philos = ft_lstnew(create_philosopher(argc, argv, i));
 		else
-			ft_lstadd_back(&lst, ft_lstnew(create_philosopher(argc, argv, i)));
+			ft_lstadd_back(&philos, ft_lstnew(create_philosopher(argc, argv, i)));
 	}
-	printf("Create Philosopher SUCCESS\n");
-	philosopher_status(lst);
+	// printf("Create Philosopher SUCCESS\n");
+	philosopher_status(philos);
+	return (philos);
 }
 
 
@@ -44,6 +46,8 @@ t_philo *create_philosopher(int argc, char **argv, int id)
 		philo->must_eat = ft_atoi(argv[5]); //must_eat;
 	else
 		philo->must_eat = -1;
+
+	// printf("create philosopher\nid : %d\ntime to die : %dms\n", philo->id, philo->time_to_die);
 	return (philo);
 }
 
