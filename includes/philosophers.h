@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/27 16:36:31 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/27 22:25:48 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,7 @@ void	return_fork(t_table *table, int philo_id);
 // Pthreading
 void	pthreading(t_table *table);
 void	*pthread_eating(void *data);
+void	*pthread_sleeping(void *data);
+void	*pthread_thinking(void *data);
 
 #endif
