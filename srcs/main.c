@@ -6,42 +6,15 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/25 20:36:55 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/27 16:16:53 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-pthread_mutex_t	mutex_lock;
-struct timeval timestamp_start;
-struct timeval timestamp_end;
-
-void	*ft_pthread(void *data)
-{
-	int lapse_ms;
-
-	pthread_mutex_lock(&mutex_lock);
-	lapse_ms = 0;
-	while (1)
-	{
-		if (((t_philo *)data)->time_to_die <= 0)
-			break;
-		usleep(1000);
-		gettimeofday(&timestamp_end, NULL);
-		lapse_ms = ((timestamp_end.tv_usec) - (timestamp_start.tv_usec)) / 1000;
-		((t_philo *)data)->time_to_die -= 1;
-		printf("start : %ldus, end : %ldus\n", timestamp_start.tv_usec, timestamp_end.tv_usec);
-		printf("%dms : [%d] is eating (time to die : %d)\n", lapse_ms, ((t_philo *)data)->id, ((t_philo *)data)->time_to_die);
-		
-		// philosopher_status((t_list *)data);
-	}
-	pthread_mutex_unlock(&mutex_lock);
-	return (NULL);
-}
-
 int	main(int argc, char *argv[])
 {
-	t_list *philos;
+	t_table *table;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -59,16 +32,22 @@ int	main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	else
-		philos = philosopher_init(argc, argv, ft_atoi(argv[1]));
-		
-	gettimeofday(&timestamp_start, NULL);
-
-	pthread_mutex_init(&mutex_lock, NULL);
-	pthread_create(&philos->pth_id, NULL, ft_pthread, philos->content);
-	pthread_join(philos->pth_id, NULL);
-	// printf("%ld\n", philos->pth_id);
-
-	gettimeofday(&timestamp_end, NULL);
+	{
+		table = set_table(argc, argv);
+		table_status(table);
+	}
 	
+	gettimeofday(&table->ts_start, NULL);
+	pthread_mutex_init(&table->mutex_lock, NULL);
+	
+	// pthread_create(&table->philos[0]->pth_id, NULL, pthread_eating, table->philos[0]);
+	// pthread_create(&table->philos[1]->pth_id, NULL, pthread_eating, table->philos[1]);
+
+	// pthread_join(table->philos[0]->pth_id, NULL);
+	// pthread_join(table->philos[1]->pth_id, NULL);
+	
+	pthreading(table);
+
+	table_status(table);
 	return 0;
 }
