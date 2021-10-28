@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/27 22:25:48 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/28 23:24:15 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	table_status(t_table *table);
 // Philosopher
 void	philosopher_init(t_table *table, int time_to_die, int must_eat);
 t_philo *create_philosopher(int id, int time_to_die, int must_eat);
+void	death_check_philosophers(t_table *table);
 
 // Timestamp
 int	timestamp_ms(t_table *table);

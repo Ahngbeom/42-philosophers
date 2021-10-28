@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/27 15:46:08 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/28 23:24:06 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,3 +45,24 @@ t_philo *create_philosopher(int id, int time_to_die, int must_eat)
 	return (philo);
 }
 
+void	death_check_philosophers(t_table *table)
+{
+	int i;
+
+	i = 0;
+	while (i < table->number_of_philosophers)
+	{
+		if (table->philos[i]->time_to_die <= 0)
+		{
+			gettimeofday(&table->ts_end, NULL);
+			i = 0;
+			while (i < table->number_of_philosophers)
+			{
+				pthread_detach(table->philos[i++]->pth_id);
+			}
+			exit(EXIT_SUCCESS);
+		}
+		i++;
+	}
+	return ;
+}

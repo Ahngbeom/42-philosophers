@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/27 16:16:53 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/28 23:23:16 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int argc, char *argv[])
 	
 	gettimeofday(&table->ts_start, NULL);
 	pthread_mutex_init(&table->mutex_lock, NULL);
-	
+
 	// pthread_create(&table->philos[0]->pth_id, NULL, pthread_eating, table->philos[0]);
 	// pthread_create(&table->philos[1]->pth_id, NULL, pthread_eating, table->philos[1]);
 

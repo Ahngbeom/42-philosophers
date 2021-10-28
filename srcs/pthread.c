@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 11:15:00 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/27 22:49:36 by bahn             ###   ########.fr       */
+/*   Updated: 2021/10/28 23:24:28 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,37 @@
 
 void	pthreading(t_table *table)
 {
-	// int i;
+	int i;
 
 	gettimeofday(&table->ts_start, NULL);
 	pthread_mutex_init(&table->mutex_lock, NULL);
-	// i = 0;
-	// while (i < table->number_of_philosophers)
-	// {
-	// 	pthread_create(&table->philos[i]->pth_id, NULL, pthread_eating, table->philos[i]);
-	// 	pthread_join(table->philos[i]->pth_id, NULL);
-	// 	pthread_create(&table->philos[i]->pth_id, NULL, pthread_sleeping, table->philos[i]);
-	// 	pthread_join(table->philos[i]->pth_id, NULL);
-	// 	i++;
-	// }
-
-	pthread_create(&table->philos[0]->pth_id, NULL, pthread_eating, table->philos[0]);
-	pthread_join(table->philos[0]->pth_id, NULL);
-	pthread_create(&table->philos[0]->pth_id, NULL, pthread_sleeping, table->philos[0]);
-	pthread_join(table->philos[0]->pth_id, NULL);
-	pthread_create(&table->philos[0]->pth_id, NULL, pthread_thinking, table->philos[0]);
-	pthread_join(table->philos[0]->pth_id, NULL);
+	while (1)
+	{
+		death_check_philosophers(table);
+		i = 0;
+		while (i < table->number_of_philosophers)
+		{
+			if (taken_fork(table, table->philos[i]->id) == TRUE)
+				pthread_create(&table->philos[i]->pth_id, NULL, pthread_eating, table->philos[i]);
+			else
+				pthread_create(&table->philos[i]->pth_id, NULL, pthread_sleeping, table->philos[i]);
+			i++;
+		}
+		i = 0;
+		while (i < table->number_of_philosophers)
+		{
+			pthread_join(table->philos[i++]->pth_id, NULL);
+		}
+	}
 	
-	gettimeofday(&table->ts_end, NULL);
+	
+	// pthread_create(&table->philos[0]->pth_id, NULL, pthread_eating, table->philos[0]);
+	// pthread_create(&table->philos[1]->pth_id, NULL, pthread_sleeping, table->philos[1]);
+	// pthread_create(&table->philos[2]->pth_id, NULL, pthread_thinking, table->philos[2]);
+	// pthread_join(table->philos[0]->pth_id, NULL);
+	// pthread_join(table->philos[1]->pth_id, NULL);
+	// pthread_join(table->philos[2]->pth_id, NULL);
+	
 }
 
 void	*pthread_eating(void *data)
@@ -86,8 +95,10 @@ void	*pthread_sleeping(void *data)
 
 void	*pthread_thinking(void *data)
 {
-	while (taken_fork(((t_philo *)data)->table, ((t_philo *)data)->id) == FAILURE)
+	while (1)
 	{
+		if (taken_fork(((t_philo *)data)->table, ((t_philo *)data)->id) == TRUE)
+			break;
 		usleep(1000);
 		printf("%dms : [%d] is thinking\n", timestamp_ms(((t_philo *)data)->table), ((t_philo *)data)->id);
 		((t_philo *)data)->time_to_die--;
