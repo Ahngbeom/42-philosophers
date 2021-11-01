@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/28 23:24:15 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/01 13:44:25 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ struct s_table
 	int time_to_sleep;
 	t_philo **philos;
 
-
 	// timestamp
 	struct timeval ts_start;
 	struct timeval ts_end;
@@ -48,11 +47,11 @@ struct s_table
 	// mutex
 	pthread_mutex_t	mutex_lock;
 
+	pthread_t *queue;
 };
 
 struct s_list
 {
-	pthread_t pth_id;
 	void			*content;
 	struct s_list	*next;
 };
@@ -65,15 +64,17 @@ struct s_philo
 	struct timeval ts_end;
 	int id;
 	int time_to_die;
-	// int time_to_eat;
-	// int time_to_sleep;
 	int must_eat;
-	
 };
 
 // Table
 t_table	*set_table(int argc, char **argv);
 void	table_status(t_table *table);
+
+// Queue
+pthread_t	*queue_init(int size);
+void	queue_status(pthread_t *queue, int size);
+void	queue_rotate(pthread_t *queue, int size);
 
 // Philosopher
 void	philosopher_init(t_table *table, int time_to_die, int must_eat);
@@ -82,12 +83,6 @@ void	death_check_philosophers(t_table *table);
 
 // Timestamp
 int	timestamp_ms(t_table *table);
-
-// Utils
-int	ft_atoi(char *str);
-void	*ft_memset(void *s, int n, size_t size);
-void	*ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t nmemb, size_t size);
 
 // Forks on the Table
 int	count_fork(int *forks, int size);
@@ -100,4 +95,15 @@ void	*pthread_eating(void *data);
 void	*pthread_sleeping(void *data);
 void	*pthread_thinking(void *data);
 
+// List
+t_list	*ft_lstnew(void *content);
+int	ft_lstsize(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+t_list	*ft_lstlast(t_list *lst);
+
+// Utils
+int	ft_atoi(char *str);
+void	*ft_memset(void *s, int n, size_t size);
+void	*ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t nmemb, size_t size);
 #endif

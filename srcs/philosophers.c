@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/28 23:24:06 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/01 12:56:28 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	death_check_philosophers(t_table *table)
 			{
 				pthread_detach(table->philos[i++]->pth_id);
 			}
+			table_status(table);
 			exit(EXIT_SUCCESS);
 		}
 		i++;

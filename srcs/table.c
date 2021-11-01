@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 13:49:56 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/27 15:31:30 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/01 13:40:56 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_table	*set_table(int argc, char **argv)
 	table->fork = ft_calloc(sizeof(int), table->number_of_philosophers);
 	table->time_to_eat = ft_atoi(argv[3]);
 	table->time_to_sleep = ft_atoi(argv[4]);
+	table->queue = queue_init(table->number_of_philosophers);
 	if (argc == 6)
 		philosopher_init(table, ft_atoi(argv[2]), ft_atoi(argv[5]));
 	else
@@ -38,6 +39,7 @@ void	table_status(t_table *table)
 	printf("철학자들의 식사 시간 : %dms\n", table->time_to_eat);
 	printf("철학자들의 수면 시간 : %dms\n", table->time_to_sleep);
 	printf("사용 가능 포크 개수 : %d\n", count_fork(table->fork, table->number_of_philosophers));
+	queue_status(table->queue, table->number_of_philosophers);
 	i = -1;
 	while (++i < table->number_of_philosophers)
 	{

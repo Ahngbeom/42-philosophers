@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 18:20:36 by bahn              #+#    #+#              #
-#    Updated: 2021/10/27 16:37:07 by bahn             ###   ########.fr        #
+#    Updated: 2021/11/01 13:31:34 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,13 +19,17 @@ INCFLAGS = -I./includes
 RM = rm -fv
 
 SRCS_PATH = ./srcs/
-SRCS_FNAME = main.c table.c philosophers.c fork.c pthread.c timestamp.c
+SRCS_FNAME = main.c table.c queue.c philosophers.c fork.c pthread.c timestamp.c
+
+LIST_PATH = $(addprefix $(SRCS_PATH), list/)
+LIST_FNAME = ft_lstnew.c ft_lstsize.c ft_lstadd_back.c ft_lstlast.c
 
 UTILS_PATH = $(addprefix $(SRCS_PATH), utils/)
 UTILS_FNAME = ft_atoi.c ft_memset.c ft_bzero.c ft_calloc.c
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FNAME)) \
-		$(addprefix $(UTILS_PATH), $(UTILS_FNAME))
+		$(addprefix $(UTILS_PATH), $(UTILS_FNAME)) \
+		$(addprefix $(LIST_PATH), $(LIST_FNAME))
 OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)
