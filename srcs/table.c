@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 13:49:56 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/01 13:40:56 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/02 21:31:22 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ t_table	*set_table(int argc, char **argv)
 	if (table == NULL)
 		exit(EXIT_FAILURE);
 	table->number_of_philosophers = ft_atoi(argv[1]);
-	table->fork = ft_calloc(sizeof(int), table->number_of_philosophers);
+	if (table->number_of_philosophers == 1)
+		table->fork = ft_calloc(sizeof(int), table->number_of_philosophers + 1);
+	else
+		table->fork = ft_calloc(sizeof(int), table->number_of_philosophers);
 	table->time_to_eat = ft_atoi(argv[3]);
 	table->time_to_sleep = ft_atoi(argv[4]);
 	table->queue = queue_init(table->number_of_philosophers);
@@ -35,6 +38,7 @@ void	table_status(t_table *table)
 {
 	int	i;
 
+	printf("==================================================\n");
 	printf("철학자의 수 : %d\n", table->number_of_philosophers);
 	printf("철학자들의 식사 시간 : %dms\n", table->time_to_eat);
 	printf("철학자들의 수면 시간 : %dms\n", table->time_to_sleep);
@@ -48,5 +52,6 @@ void	table_status(t_table *table)
 			table->philos[i]->time_to_die, \
 			table->philos[i]->must_eat);
 	}
+	printf("==================================================\n");
 	return ;
 }

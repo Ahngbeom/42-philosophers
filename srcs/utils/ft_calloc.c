@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 13:24:07 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/27 13:24:53 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/02 13:25:00 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ptr = malloc(size * nmemb);
 	if (!ptr)
 		return (NULL);
-	ft_bzero(ptr, size * nmemb);
+	// ft_bzero(ptr, size * nmemb);
+	memset(ptr, 0, size * nmemb);
 	return (ptr);
 }

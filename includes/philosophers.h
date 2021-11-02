@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/01 13:44:25 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/02 21:34:03 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <stdio.h>
+# include <string.h>
 # include <malloc.h>
 
 typedef struct s_table t_table;
@@ -47,7 +48,13 @@ struct s_table
 	// mutex
 	pthread_mutex_t	mutex_lock;
 
-	pthread_t *queue;
+	// pthread_t Type 
+	// Linux : unsigned long integer
+	// Mac OS X : pointer of pthread structure
+
+	// t_list *queue;
+	int *queue;
+
 };
 
 struct s_list
@@ -72,9 +79,9 @@ t_table	*set_table(int argc, char **argv);
 void	table_status(t_table *table);
 
 // Queue
-pthread_t	*queue_init(int size);
-void	queue_status(pthread_t *queue, int size);
-void	queue_rotate(pthread_t *queue, int size);
+int	*queue_init(int size);
+void	queue_status(int *queue, int size);
+void	queue_rotate(int *queue, int size);
 
 // Philosopher
 void	philosopher_init(t_table *table, int time_to_die, int must_eat);
@@ -103,7 +110,6 @@ t_list	*ft_lstlast(t_list *lst);
 
 // Utils
 int	ft_atoi(char *str);
-void	*ft_memset(void *s, int n, size_t size);
 void	*ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 #endif

@@ -6,18 +6,18 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 13:27:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/01 14:12:12 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/02 21:41:45 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-pthread_t	*queue_init(int size)
+int	*queue_init(int size)
 {
-	pthread_t *queue;
+	int *queue;
 	int i;
 
-	queue = ft_calloc(sizeof(pthread_t), size);
+	queue = ft_calloc(sizeof(int), size);
 	if (queue == NULL)
 		exit(EXIT_FAILURE);
 	i = 0;
@@ -29,29 +29,30 @@ pthread_t	*queue_init(int size)
 	return (queue);
 }
 
-void	queue_status(pthread_t *queue, int size)
+void	queue_status(int *queue, int size)
 {
 	int i;
 
 	i = 0;
 	printf("대기열 : [ ");
-	while (i < size)
+	while (queue != NULL && i < size)
 	{
-		printf("%ld ", queue[i++]);
+		printf("%d ", queue[i++]);
 	}
 	printf("]\n");
 }
 
-void	queue_rotate(pthread_t *queue, int size)
+void	queue_rotate(int *queue, int size)
 {
-	pthread_t temp;
+	int temp;
 	int i;
 
 	temp = queue[0];
-	i = 1;
-	while (i < size)
+	// printf("first queue rotate : %d -> %d\n", temp, queue[1]);
+	i = 0;
+	while (i < size - 1)
 	{
-		queue[i - 1] = queue[i];
+		queue[i] = queue[i + 1];
 		i++;
 	}
 	queue[i] = temp;
