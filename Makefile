@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 18:20:36 by bahn              #+#    #+#              #
-#    Updated: 2021/11/02 12:03:56 by bahn             ###   ########.fr        #
+#    Updated: 2021/11/03 15:35:47 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ INCFLAGS = -I./includes
 RM = rm -fv
 
 SRCS_PATH = ./srcs/
-SRCS_FNAME = main.c table.c queue.c philosophers.c fork.c pthread.c timestamp.c
+SRCS_FNAME = main.c table.c fork.c pthread.c philosophers.c 
+# queue.c timestamp.c
 
 LIST_PATH = $(addprefix $(SRCS_PATH), list/)
 LIST_FNAME = ft_lstnew.c ft_lstsize.c ft_lstadd_back.c ft_lstlast.c

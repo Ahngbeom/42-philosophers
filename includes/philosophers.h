@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/02 21:34:03 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/03 22:35:20 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,21 @@
 typedef struct s_table t_table;
 typedef struct s_list t_list;
 typedef struct s_philo t_philo;
+typedef	struct s_timestamp t_timestamp;
+
+t_timestamp timestamp;
 
 struct s_table
 {
-	int number_of_philosophers;
+	int	number_of_philos;
 	int *fork;
-	int time_to_eat;
-	int time_to_sleep;
-	t_philo **philos;
+	int	time_to_eat;
+	int	time_to_sleep;
 
-	// timestamp
-	struct timeval ts_start;
-	struct timeval ts_end;
+	pthread_t *pthread_id;
+	t_philo *philos;
 
-	// mutex
-	pthread_mutex_t	mutex_lock;
-
-	// pthread_t Type 
-	// Linux : unsigned long integer
-	// Mac OS X : pointer of pthread structure
-
-	// t_list *queue;
-	int *queue;
-
+	// t_timestamp *timestamp;
 };
 
 struct s_list
@@ -65,13 +57,18 @@ struct s_list
 
 struct s_philo
 {
-	t_table *table;
-	pthread_t pth_id;
-	struct timeval ts_start;
-	struct timeval ts_end;
+	pthread_t pthread_id;
 	int id;
-	int time_to_die;
-	int must_eat;
+	int	time_to_die;
+	int	must_eat;
+
+	t_table *table;
+};
+
+struct s_timestamp
+{
+	struct	timeval start;
+	struct	timeval end;
 };
 
 // Table
@@ -79,12 +76,12 @@ t_table	*set_table(int argc, char **argv);
 void	table_status(t_table *table);
 
 // Queue
-int	*queue_init(int size);
-void	queue_status(int *queue, int size);
-void	queue_rotate(int *queue, int size);
+pthread_t	*queue_init(int size);
+void	queue_status(pthread_t *queue, int size);
+void	queue_rotate(pthread_t *queue, int size);
 
 // Philosopher
-void	philosopher_init(t_table *table, int time_to_die, int must_eat);
+t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat);
 t_philo *create_philosopher(int id, int time_to_die, int must_eat);
 void	death_check_philosophers(t_table *table);
 
@@ -97,7 +94,11 @@ int	taken_fork(t_table *table, int philo_id);
 void	return_fork(t_table *table, int philo_id);
 
 // Pthreading
-void	pthreading(t_table *table);
+void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	thinking(t_philo *philo);
+
+// void	*pthreading(void *data);
 void	*pthread_eating(void *data);
 void	*pthread_sleeping(void *data);
 void	*pthread_thinking(void *data);

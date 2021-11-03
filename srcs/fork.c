@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 10:43:39 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/02 13:49:39 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/03 22:34:59 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ int	count_fork(int *forks, int size)
 
 int	taken_fork(t_table *table, int philo_id)
 {
-
-	if (philo_id == table->number_of_philosophers && table->number_of_philosophers != 1)
+	if (philo_id == table->number_of_philos && table->number_of_philos != 1)
 	{
 		if (table->fork[0] == 0 && table->fork[philo_id - 1] == 0)
 		{
@@ -65,12 +64,12 @@ void	return_fork(t_table *table, int philo_id)
 	int i;
 
 	i = 0;
-	while (i < table->number_of_philosophers)
+	while (i < table->number_of_philos)
 	{
 		if (table->fork[i] == philo_id)
 			table->fork[i] = 0;
 		i++;
-		if (table->number_of_philosophers == 1)
+		if (table->number_of_philos == 1)
 			table->fork[i] = 0;
 	}
 }

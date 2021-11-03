@@ -6,15 +6,25 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/10/29 19:50:31 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/03 23:21:42 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+static	void	*pthreading(void *data)
+{
+	if (taken_fork(((t_philo *)data)->table, ((t_philo *)data)->id) == SUCCESS)
+		eating((t_philo *)data);
+	else
+		sleeping((t_philo *)data);
+	return (data);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_table *table;
+	int i;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -37,17 +47,17 @@ int	main(int argc, char *argv[])
 		table_status(table);
 	}
 	
-	gettimeofday(&table->ts_start, NULL);
-	pthread_mutex_init(&table->mutex_lock, NULL);
-
-	// pthread_create(&table->philos[0]->pth_id, NULL, pthread_eating, table->philos[0]);
-	// pthread_create(&table->philos[1]->pth_id, NULL, pthread_eating, table->philos[1]);
-
-	// pthread_join(table->philos[0]->pth_id, NULL);
-	// pthread_join(table->philos[1]->pth_id, NULL);
+	gettimeofday(&timestamp.start, NULL);
+	// pthread_mutex_init(&table->mutex_lock, NULL);
 	
-	pthreading(table);
-
-	table_status(table);
+	i = 0;
+	while (i < table->number_of_philos)
+	{
+		pthread_create(&table->philos[i].pthread_id, NULL, pthreading, &table->philos[i]);
+		pthread_join(table->philos[i].pthread_id, NULL);
+		i++;
+	}
+	
+	// table_status(table);
 	return 0;
 }
