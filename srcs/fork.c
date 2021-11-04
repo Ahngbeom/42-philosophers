@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 10:43:39 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/04 21:28:33 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/04 21:43:24 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	taken_fork(t_table *table, int philo_id)
 			table->fork[0] = philo_id;
 			table->fork[philo_id - 1] = philo_id;
 			printf("%ldms : [%d] has taken a fork\n", (timestamp.end.tv_usec - timestamp.start.tv_usec) / 1000, philo_id);
-
 			return (SUCCESS);
 		}
 		else
