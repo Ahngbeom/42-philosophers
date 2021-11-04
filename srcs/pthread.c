@@ -6,23 +6,39 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 11:15:00 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/03 23:22:09 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/04 20:26:16 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	eating(t_philo *philo)
+void	eating(t_philo *philo, int limit)
 {
-	usleep(1000);
+	int i;
+
+	i = 0;
+	while (i++ < limit)
+	{	
+		usleep(1000);
+		philo->time_to_die--;
+	}
+	philo->must_eat--;
 	gettimeofday(&timestamp.end, NULL);
 	printf("%ldms : [%d] is eating\n", (timestamp.end.tv_usec - timestamp.start.tv_usec) / 1000, philo->id);
-	sleeping(philo);
+	return_fork(philo->table, philo->id);
+	sleeping(philo, philo->table->time_to_sleep);
 }
 
-void	sleeping(t_philo *philo)
+void	sleeping(t_philo *philo, int limit)
 {
-	usleep(1000);
+	int i;
+
+	i = 0;
+	while (i++ < limit)
+	{
+		usleep(1000);
+		philo->time_to_die--;
+	}
 	gettimeofday(&timestamp.end, NULL);
 	printf("%ldms : [%d] is sleeping\n", (timestamp.end.tv_usec - timestamp.start.tv_usec) / 1000, philo->id);
 	thinking(philo);
@@ -30,13 +46,16 @@ void	sleeping(t_philo *philo)
 
 void	thinking(t_philo *philo)
 {
-	usleep(1000);
-	gettimeofday(&timestamp.end, NULL);
-	printf("%ldms : [%d] is thinking\n", (timestamp.end.tv_usec - timestamp.start.tv_usec) / 1000, philo->id);
 	if (taken_fork(philo->table, philo->id) == SUCCESS)
-		eating(philo);
+		eating(philo, philo->table->time_to_eat);
 	else
+	{	
+		usleep(1000);
+		philo->time_to_die--;
+		gettimeofday(&timestamp.end, NULL);
+		printf("%ldms : [%d] is thinking\n", (timestamp.end.tv_usec - timestamp.start.tv_usec) / 1000, philo->id);
 		thinking(philo);
+	}
 }
 // void	pthreading(t_table *table)
 // {
