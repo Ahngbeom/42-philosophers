@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/04 20:03:52 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/05 19:31:17 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ static	void	*observer(void *data)
 		{
 			if (((t_table *)data)->philos[i].time_to_die <= 0 || ((t_table *)data)->philos[i].must_eat == 0)
 			{
-				table_status((t_table *)data);
+				printf("%ldms : [%d] died\n", (timestamp.end.tv_usec - timestamp.start.tv_usec) / 1000, ((t_table *)data)->philos[i].id);
+				// table_status((t_table *)data);
 				exit(EXIT_SUCCESS);
+				// return (data);
 			}
 			i++;
 		}
@@ -62,16 +64,13 @@ int	main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	else
-	{
 		table = set_table(argc, argv);
-		table_status(table);
-	}
 	
 	gettimeofday(&timestamp.start, NULL);
-	// pthread_mutex_init(&table->mutex_lock, NULL);
+	pthread_mutex_init(&mutex, NULL);
 	
 	pthread_create(&table->philos[0].pthread_id, NULL, observer, table);
-	table_status(table);
+	// table_status(table);
 
 	i = 0;
 	while (i < table->number_of_philos)

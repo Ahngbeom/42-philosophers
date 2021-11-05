@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/04 16:50:11 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/05 16:19:15 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_philo t_philo;
 typedef	struct s_timestamp t_timestamp;
 
 t_timestamp timestamp;
+pthread_mutex_t mutex;
 
 struct s_table
 {
@@ -86,7 +87,7 @@ t_philo *create_philosopher(int id, int time_to_die, int must_eat);
 void	death_check_philosophers(t_table *table);
 
 // Timestamp
-int	timestamp_ms(t_table *table);
+long int	timestamp_ms(void);
 
 // Forks on the Table
 int	count_fork(int *forks, int size);
