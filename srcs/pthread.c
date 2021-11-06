@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 11:15:00 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/06 17:21:44 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/07 00:43:35 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	eating(t_philo *philo, int limit)
 		usleep(1000);
 		gettimeofday(&timestamp.end, NULL);
 		philo->time_to_die--;
-		printf("%ldms : [%d] is eating\n", timestamp_ms(), philo->id);
+		printf("%ld %d is eating\n", timestamp_ms(), philo->id);
 	}
 	philo->must_eat--;
 	return_fork(philo->table, philo->id);
@@ -39,7 +39,7 @@ void	sleeping(t_philo *philo, int limit)
 		usleep(1000);
 		gettimeofday(&timestamp.end, NULL);
 		philo->time_to_die--;
-		printf("%ldms : [%d] is sleeping\n", timestamp_ms(), philo->id);
+		printf("%ld %d is sleeping\n", timestamp_ms(), philo->id);
 	}
 	thinking(philo);
 }
@@ -58,7 +58,7 @@ void	thinking(t_philo *philo)
 		usleep(1000);
 		philo->time_to_die--;
 		gettimeofday(&timestamp.end, NULL);
-		printf("%ldms : [%d] is thinking\n", timestamp_ms(), philo->id);
+		printf("%ld %d is thinking\n", timestamp_ms(), philo->id);
 		thinking(philo);
 	}
 }

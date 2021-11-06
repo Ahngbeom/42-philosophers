@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/06 17:21:18 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/07 00:43:25 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,8 @@ static	void	*observer(void *data)
 		{
 			if (((t_table *)data)->philos[i].time_to_die <= 0 || ((t_table *)data)->philos[i].must_eat == 0)
 			{
-				printf("%ldms : [%d] is died\n", timestamp_ms(), ((t_table *)data)->philos[i].id);
-				// table_status((t_table *)data);
+				printf("%ld %d is died\n", timestamp_ms(), ((t_table *)data)->philos[i].id);
 				exit(EXIT_SUCCESS);
-				// return (data);
 			}
 			i++;
 		}
