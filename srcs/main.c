@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/06 13:48:04 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/06 17:21:18 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,7 @@ static	void	*observer(void *data)
 		{
 			if (((t_table *)data)->philos[i].time_to_die <= 0 || ((t_table *)data)->philos[i].must_eat == 0)
 			{
-				printf("%ldms(%ldms - %ldms) : [%d] is thinking\n", \
-					((((timestamp.end.tv_sec - timestamp.start.tv_sec) * 1000000) + timestamp.end.tv_usec) - timestamp.start.tv_usec) / 1000, \
-					((timestamp.end.tv_sec - timestamp.start.tv_sec) * 1000000) + timestamp.end.tv_usec, \
-					timestamp.start.tv_usec, \
-					((t_table *)data)->philos[i].id);
+				printf("%ldms : [%d] is died\n", timestamp_ms(), ((t_table *)data)->philos[i].id);
 				// table_status((t_table *)data);
 				exit(EXIT_SUCCESS);
 				// return (data);
