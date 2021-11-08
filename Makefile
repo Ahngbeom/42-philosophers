@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/21 18:20:36 by bahn              #+#    #+#              #
-#    Updated: 2021/11/07 00:58:51 by bahn             ###   ########.fr        #
+#    Updated: 2021/11/08 12:37:13 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ all : $(NAME)
 
 .c.o : $(SRCS)
 		$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
+		$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o philo_one
 
 $(NAME) : $(OBJS)
 		$(CC) $(CFLAGS) $(INCFLAGS) $^ -lpthread -o $@
@@ -44,7 +45,7 @@ clean :
 		$(RM) $(OBJS)
 
 fclean : clean
-		$(RM) $(NAME)
+		$(RM) $(NAME) philo_one
 
 re : fclean all
 
