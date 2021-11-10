@@ -27,7 +27,7 @@
 # include <sys/time.h>
 # include <stdio.h>
 # include <string.h>
-# include <malloc.h>
+# include <stdlib.h>
 
 typedef struct s_table t_table;
 typedef struct s_list t_list;
