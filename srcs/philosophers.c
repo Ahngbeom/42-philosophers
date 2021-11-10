@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/03 22:33:29 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/09 12:44:44 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat)
 	}
 	return (philo);
 }
+int	death_check_philosophers(t_table *table)
+{
+	int i;
+
+	i = 0;
+	while (i < table->number_of_philos)
+	{
+		if (table->pthread_id[i] == -1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 // t_philo *create_philosopher(int id, int time_to_die, int must_eat)
 // {
@@ -46,25 +59,3 @@ t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat)
 // 	return (philo);
 // }
 
-// void	death_check_philosophers(t_table *table)
-// {
-// 	int i;
-
-// 	i = 0;
-// 	while (i < table->number_of_philosophers)
-// 	{
-// 		if (table->philos[i]->time_to_die <= 0)
-// 		{
-// 			gettimeofday(&table->ts_end, NULL);
-// 			i = 0;
-// 			while (i < table->number_of_philosophers)
-// 			{
-// 				pthread_detach(table->philos[i++]->pth_id);
-// 			}
-// 			table_status(table);
-// 			exit(EXIT_SUCCESS);
-// 		}
-// 		i++;
-// 	}
-// 	return ;
-// }

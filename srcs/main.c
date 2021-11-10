@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:25 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/08 12:27:51 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/09 13:18:42 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ static	void	*observer(void *data)
 		{
 			if (((t_table *)data)->philos[i].time_to_die <= 0 || ((t_table *)data)->philos[i].must_eat == 0)
 			{
-				printf("%ld %d is died\n", timestamp_ms(), ((t_table *)data)->philos[i].id);
-				exit(EXIT_SUCCESS);
+				gettimeofday(&((t_table *)data)->timestamp->end, NULL);
+				printf("%ld %d is died\n", timestamp_ms(((t_table *)data)->timestamp), ((t_table *)data)->philos[i].id);
+				((t_table *)data)->pthread_id[i] = -1;
+				return (data);
 			}
 			i++;
 		}
@@ -34,10 +36,14 @@ static	void	*observer(void *data)
 
 static	void	*pthreading(void *data)
 {
-	if (taken_fork(((t_philo *)data)->table, ((t_philo *)data)->id) == SUCCESS)
-		eating((t_philo *)data, ((t_philo *)data)->table->time_to_eat);
+	t_philo *philo;
+
+	philo = data;
+	// gettimeofday(&((t_philo *)data)->table->timestamp->start, NULL);
+	if (taken_fork(philo->table, philo->id) == SUCCESS)
+		eating(philo, philo->table->time_to_eat);
 	else
-		sleeping((t_philo *)data, ((t_philo *)data)->table->time_to_sleep);
+		sleeping(philo, philo->table->time_to_sleep);
 	return (data);
 }
 
@@ -64,9 +70,9 @@ int	main(int argc, char *argv[])
 	else
 		table = set_table(argc, argv);
 	
-	gettimeofday(&timestamp.start, NULL);
 	pthread_mutex_init(&mutex, NULL);
 	
+	gettimeofday(&table->timestamp->start, NULL);
 	pthread_create(&table->philos[0].pthread_id, NULL, observer, table);
 	// table_status(table);
 

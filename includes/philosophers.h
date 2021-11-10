@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/08 13:21:17 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/09 13:26:45 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_list t_list;
 typedef struct s_philo t_philo;
 typedef	struct s_timestamp t_timestamp;
 
-t_timestamp timestamp;
+// t_timestamp timestamp;
 pthread_mutex_t mutex;
 
 struct s_table
@@ -44,10 +44,12 @@ struct s_table
 	int	time_to_eat;
 	int	time_to_sleep;
 
-	pthread_t *pthread_id;
+	long long *pthread_id;
 	t_philo *philos;
 
-	// t_timestamp *timestamp;
+	t_timestamp *timestamp;
+
+	int died_check;
 };
 
 struct s_list
@@ -84,10 +86,10 @@ void	queue_rotate(pthread_t *queue, int size);
 // Philosopher
 t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat);
 t_philo *create_philosopher(int id, int time_to_die, int must_eat);
-void	death_check_philosophers(t_table *table);
+int	death_check_philosophers(t_table *table);
 
 // Timestamp
-long int	timestamp_ms(void);
+long int	timestamp_ms(t_timestamp *timestamp);
 
 // Forks on the Table
 int	count_fork(int *forks, int size);

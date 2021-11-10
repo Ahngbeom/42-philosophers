@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 13:49:56 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/08 12:27:51 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/08 14:05:33 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_table	*set_table(int argc, char **argv)
 	else if (argc == 6)
 		table->philos = philosopher_init(table, ft_atoi(argv[2]), ft_atoi(argv[5]));
 	table->pthread_id = ft_calloc(sizeof(pthread_t), table->number_of_philos + 1);
+	table->timestamp = malloc(sizeof(struct timeval));
 	return (table);
 }
 
