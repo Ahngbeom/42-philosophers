@@ -17,6 +17,7 @@ t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat)
 	t_philo *philo;
 	int i;
 
+	(void)time_to_die;
 	philo = malloc(sizeof(t_philo) * table->number_of_philos);
 	if (philo == NULL)
 		exit(EXIT_FAILURE);
@@ -25,9 +26,10 @@ t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat)
 	while (i < table->number_of_philos)
 	{
 		philo[i].id = i + 1;
-		philo[i].time_to_die = time_to_die;
+		philo[i].life = 0;
 		philo[i].must_eat = must_eat;
 		philo[i].table = table;
+		philo[i].timestamp = malloc(sizeof(t_timestamp));
 		i++;
 	}
 	return (philo);

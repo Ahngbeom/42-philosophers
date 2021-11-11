@@ -14,16 +14,18 @@
 
 static	void	*observer(void *data)
 {
+	t_table *table;
 	int i;
 
+	table = data;
 	while (1)
 	{
 		i = 0;
-		while (i < ((t_table *)data)->number_of_philos)
+		while (i < table->number_of_philos)
 		{
-			if (((t_table *)data)->philos[i].time_to_die <= 0 || ((t_table *)data)->philos[i].must_eat == 0)
+			if (table->philos[i].life >= table->time_to_die || table->philos[i].must_eat == 0)
 			{
-				printf("%ld %d is died\n", timestamp_ms(), ((t_table *)data)->philos[i].id);
+				printf("%ld %d is died\n", timestamp_ms(table->timestamp), table->philos[i].id);
 				exit(EXIT_SUCCESS);
 			}
 			i++;
@@ -34,10 +36,7 @@ static	void	*observer(void *data)
 
 static	void	*pthreading(void *data)
 {
-	if (taken_fork(((t_philo *)data)->table, ((t_philo *)data)->id) == SUCCESS)
-		eating((t_philo *)data, ((t_philo *)data)->table->time_to_eat);
-	else
-		sleeping((t_philo *)data, ((t_philo *)data)->table->time_to_sleep);
+	eating((t_philo *)data);
 	return (data);
 }
 
@@ -64,9 +63,7 @@ int	main(int argc, char *argv[])
 	else
 		table = set_table(argc, argv);
 	
-	gettimeofday(&timestamp.start, NULL);
-	pthread_mutex_init(&mutex, NULL);
-	
+	gettimeofday(&table->timestamp->start, NULL);
 	pthread_create(&table->philos[0].pthread_id, NULL, observer, table);
 	// table_status(table);
 

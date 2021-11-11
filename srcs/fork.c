@@ -37,8 +37,8 @@ int	taken_fork(t_table *table, int philo_id)
 		{
 			table->fork[0] = philo_id;
 			table->fork[philo_id - 1] = philo_id;
-			gettimeofday(&timestamp.end, NULL);
-			printf("%ld %d has taken a fork\n", timestamp_ms(), philo_id);
+			gettimeofday(&table->timestamp->end, NULL);
+			printf("%ld %d has taken a fork\n", timestamp_ms(table->timestamp), philo_id);
 			return (SUCCESS);
 		}
 		else
@@ -50,8 +50,8 @@ int	taken_fork(t_table *table, int philo_id)
 		{
 			table->fork[philo_id - 1] = philo_id;
 			table->fork[philo_id] = philo_id;
-			gettimeofday(&timestamp.end, NULL);
-			printf("%ld %d has taken a fork\n", timestamp_ms(), philo_id);
+			gettimeofday(&table->timestamp->end, NULL);
+			printf("%ld %d has taken a fork\n", timestamp_ms(table->timestamp), philo_id);
 			return (SUCCESS);
 		}
 		else
@@ -72,4 +72,6 @@ void	return_fork(t_table *table, int philo_id)
 		if (table->number_of_philos == 1)
 			table->fork[i] = 0;
 	}
+	pthread_mutex_unlock(&table->mutex[philo_id - 1]);
+
 }

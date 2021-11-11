@@ -15,6 +15,7 @@
 t_table	*set_table(int argc, char **argv)
 {
 	t_table *table;
+	int i;
 
 	table = malloc(sizeof(t_table));
 	if (table == NULL)
@@ -24,6 +25,7 @@ t_table	*set_table(int argc, char **argv)
 		table->fork = ft_calloc(sizeof(int), table->number_of_philos + 1);
 	else
 		table->fork = ft_calloc(sizeof(int), table->number_of_philos);
+	table->time_to_die = ft_atoi(argv[2]);
 	table->time_to_eat = ft_atoi(argv[3]);
 	table->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 5)
@@ -31,6 +33,13 @@ t_table	*set_table(int argc, char **argv)
 	else if (argc == 6)
 		table->philos = philosopher_init(table, ft_atoi(argv[2]), ft_atoi(argv[5]));
 	table->pthread_id = ft_calloc(sizeof(pthread_t), table->number_of_philos + 1);
+	table->mutex = malloc(sizeof(pthread_mutex_t) * table->number_of_philos);
+	i = 0;
+	while (i < table->number_of_philos)
+	{
+		pthread_mutex_init(&table->mutex[i++], NULL);
+	}
+	table->timestamp = malloc(sizeof(t_timestamp));
 	return (table);
 }
 
@@ -54,7 +63,7 @@ void	table_status(t_table *table)
 	i = -1;
 	while (++i < table->number_of_philos)
 	{
-		printf("철학자 %d의 상태 (남은 수명, 남은 식사 횟수) : %d, %d\n", table->philos[i].id, table->philos[i].time_to_die, table->philos[i].must_eat);
+		printf("철학자 %d의 상태 (남은 수명, 남은 식사 횟수) : %d, %d\n", table->philos[i].id, table->philos[i].life, table->philos[i].must_eat);
 	}
 	printf("==================================================\n");
 	return ;

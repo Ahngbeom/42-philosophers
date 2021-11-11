@@ -12,50 +12,62 @@
 
 #include "philosophers.h"
 
-void	eating(t_philo *philo, int limit)
+void	eating(t_philo *philo)
 {
-	int i;
+	pthread_mutex_lock(&(philo->table->mutex[philo->id - 1]));
+	pthread_mutex_lock(&(philo->table->mutex[philo->id % philo->table->number_of_philos]));
+	printf("%ld %d has taken a fork\n", timestamp_ms(philo->table->timestamp), philo->id);
 
-	i = 0;
-	while (i++ < limit)
+	printf("%ld %d is eating\n", timestamp_ms(philo->table->timestamp), philo->id);
+	gettimeofday(&philo->timestamp->start, NULL);
+	while (timestamp_ms(philo->timestamp) <= philo->table->time_to_eat)
 	{	
 		usleep(1000);
-		philo->time_to_die--;
+		if(++(philo->life) >= philo->table->time_to_die)
+		{
+			printf("%ld %d is died\n", timestamp_ms(philo->table->timestamp), philo->id);
+			exit(EXIT_FAILURE);
+		}
 	}
-	printf("%ld %d is eating\n", timestamp_ms(), philo->id);
 	philo->must_eat--;
-	return_fork(philo->table, philo->id);
-	sleeping(philo, philo->table->time_to_sleep);
+	philo->life = 0;
+	pthread_mutex_unlock(&(philo->table->mutex[philo->id - 1]));
+	pthread_mutex_unlock(&(philo->table->mutex[philo->id % philo->table->number_of_philos]));
+	sleeping(philo);
 }
 
-void	sleeping(t_philo *philo, int limit)
+void	sleeping(t_philo *philo)
 {
-	int i;
-
-	i = 0;
-	while (i++ < limit)
+	printf("%ld %d is sleeping\n", timestamp_ms(philo->table->timestamp), philo->id);
+	gettimeofday(&philo->timestamp->start, NULL);
+	while (timestamp_ms(philo->timestamp) <= philo->table->time_to_sleep)
 	{
 		usleep(1000);
-		philo->time_to_die--;
+		if(++(philo->life) >= philo->table->time_to_die)
+		{
+			printf("%ld %d is died\n", timestamp_ms(philo->table->timestamp), philo->id);
+			exit(EXIT_FAILURE);
+		}
 	}
-	printf("%ld %d is sleeping\n", timestamp_ms(), philo->id);
 	thinking(philo);
 }
 
 void	thinking(t_philo *philo)
 {
-	int fork;
+	// int fork;
 
-	pthread_mutex_lock(&mutex);
-	fork = taken_fork(philo->table, philo->id);
-	pthread_mutex_unlock(&mutex);
-	if (fork == SUCCESS)
-		eating(philo, philo->table->time_to_eat);
-	else
-	{	
-		usleep(1000);
-		philo->time_to_die--;
-		printf("%ld %d is thinking\n", timestamp_ms(), philo->id);
-		thinking(philo);
-	}
+	printf("%ld %d is thinking\n", timestamp_ms(philo->table->timestamp), philo->id);
+
+	// taken_fork(philo->table, philo->id);
+	eating(philo);
+	// else
+	// {	
+	// 	usleep(1000);
+	// 	if(++(philo->life) >= philo->table->time_to_die)
+	// 	{
+	// 		printf("%ld %d is died\n", timestamp_ms(philo->table->timestamp), philo->id);
+	// 		exit(EXIT_FAILURE);
+	// 	}
+	// 	thinking(philo);
+	// }
 }

@@ -34,20 +34,22 @@ typedef struct s_list t_list;
 typedef struct s_philo t_philo;
 typedef	struct s_timestamp t_timestamp;
 
-t_timestamp timestamp;
-pthread_mutex_t mutex;
+// t_timestamp timestamp;
 
 struct s_table
 {
 	int	number_of_philos;
 	int *fork;
+	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
 
 	pthread_t *pthread_id;
 	t_philo *philos;
 
-	// t_timestamp *timestamp;
+	pthread_mutex_t *mutex;
+
+	t_timestamp *timestamp;
 };
 
 struct s_list
@@ -60,10 +62,12 @@ struct s_philo
 {
 	pthread_t pthread_id;
 	int id;
-	int	time_to_die;
+	int	life;
 	int	must_eat;
 
 	t_table *table;
+
+	t_timestamp *timestamp;
 };
 
 struct s_timestamp
@@ -87,7 +91,7 @@ t_philo *create_philosopher(int id, int time_to_die, int must_eat);
 void	death_check_philosophers(t_table *table);
 
 // Timestamp
-long int	timestamp_ms(void);
+long int	timestamp_ms(t_timestamp *timestamp);
 
 // Forks on the Table
 int	count_fork(int *forks, int size);
@@ -95,8 +99,8 @@ int	taken_fork(t_table *table, int philo_id);
 void	return_fork(t_table *table, int philo_id);
 
 // Pthreading
-void	eating(t_philo *philo, int limit);
-void	sleeping(t_philo *philo, int limit);
+void	eating(t_philo *philo);
+void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);
 
 // void	*pthreading(void *data);
@@ -114,4 +118,5 @@ t_list	*ft_lstlast(t_list *lst);
 int	ft_atoi(char *str);
 void	*ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
+
 #endif
