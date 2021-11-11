@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/27 11:15:00 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/08 13:08:18 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/09 12:53:40 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@ void	eating(t_philo *philo)
 	gettimeofday(&philo->timestamp->start, NULL);
 	while (timestamp_ms(philo->timestamp) <= philo->table->time_to_eat)
 	{	
+		if (death_check_philosophers(philo->table) == 1)
+		{
+			return ;
+		}
 		usleep(1000);
 		if(++(philo->life) >= philo->table->time_to_die)
 		{

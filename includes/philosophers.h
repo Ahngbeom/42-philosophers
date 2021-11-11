@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/08 13:21:17 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/09 13:26:45 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ struct s_table
 	int	time_to_eat;
 	int	time_to_sleep;
 
-	pthread_t *pthread_id;
+	long long *pthread_id;
 	t_philo *philos;
 
 	pthread_mutex_t *mutex;
@@ -88,7 +88,7 @@ void	queue_rotate(pthread_t *queue, int size);
 // Philosopher
 t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat);
 t_philo *create_philosopher(int id, int time_to_die, int must_eat);
-void	death_check_philosophers(t_table *table);
+int	death_check_philosophers(t_table *table);
 
 // Timestamp
 long int	timestamp_ms(t_timestamp *timestamp);
