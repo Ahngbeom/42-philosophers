@@ -26,38 +26,45 @@ t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat)
 	while (i < table->number_of_philos)
 	{
 		philo[i].id = i + 1;
-		philo[i].life = 0;
 		philo[i].must_eat = must_eat;
 		philo[i].table = table;
 		philo[i].timestamp = malloc(sizeof(t_timestamp));
+		philo[i].last_eat_time = malloc(sizeof(t_timestamp));
 		i++;
 	}
 	return (philo);
 }
-int	death_check_philosophers(t_table *table)
+
+void	philosopher_doing(t_table *table)
 {
 	int i;
 
-	i = 0;
-	while (i < table->number_of_philos)
+	i = -1;
+	while (++i < table->number_of_philos)
 	{
-		if (table->pthread_id[i] == -1)
-			return (1);
-		i++;
+		if (pthread_create(&table->philos[i].pthread_id, NULL, pthreading, &table->philos[i]))
+		{
+			printf("error\n");
+			exit(1);
+		}
 	}
-	return (0);
+	while (1)
+	{
+		if (table->died_cnt > 0)
+			break;
+	}
 }
 
-// t_philo *create_philosopher(int id, int time_to_die, int must_eat)
-// {
-// 	t_philo *philo;
+void	philosopher_end(t_table *table)
+{
+	int i;
 
-// 	philo = malloc(sizeof(t_philo));
-// 	if (philo == NULL)
-// 		exit(EXIT_FAILURE);
-// 	philo->id = id;
-// 	philo->time_to_die = time_to_die;
-// 	philo->must_eat = must_eat;
-// 	return (philo);
-// }
+	i = -1;
+	while (++i < table->number_of_philos)
+		pthread_join(table->philos[i].pthread_id, NULL);
 
+	i = -1;
+	while (++i < table->number_of_philos)
+		pthread_mutex_destroy(&table->fork_mutex[i]);
+	pthread_mutex_destroy(&table->die_check_mutex);
+}

@@ -39,17 +39,19 @@ typedef	struct s_timestamp t_timestamp;
 struct s_table
 {
 	int	number_of_philos;
-	int *fork;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
 
-	long long *pthread_id;
+	pthread_t *pthread_id;
 	t_philo *philos;
 
-	pthread_mutex_t *mutex;
+	pthread_mutex_t *fork_mutex;
+	pthread_mutex_t die_check_mutex;
 
 	t_timestamp *timestamp;
+
+	unsigned int died_cnt;
 };
 
 struct s_list
@@ -61,13 +63,14 @@ struct s_list
 struct s_philo
 {
 	pthread_t pthread_id;
+	pthread_t observer_pth_id;
 	int id;
-	int	life;
 	int	must_eat;
 
 	t_table *table;
 
 	t_timestamp *timestamp;
+	t_timestamp *last_eat_time;
 };
 
 struct s_timestamp
@@ -93,12 +96,13 @@ int	death_check_philosophers(t_table *table);
 // Timestamp
 long int	timestamp_ms(t_timestamp *timestamp);
 
-// Forks on the Table
-int	count_fork(int *forks, int size);
-int	taken_fork(t_table *table, int philo_id);
-void	return_fork(t_table *table, int philo_id);
+void	philosopher_doing(t_table *table);
+void	philosopher_end(t_table *table);
 
 // Pthreading
+void	*pthreading(void *data);
+
+void	taken_fork(t_philo *philo);
 void	eating(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);

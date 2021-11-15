@@ -12,38 +12,9 @@
 
 #include "philosophers.h"
 
-static	void	*observer(void *data)
-{
-	t_table *table;
-	int i;
-
-	table = data;
-	while (1)
-	{
-		i = 0;
-		while (i < table->number_of_philos)
-		{
-			if (table->philos[i].life >= table->time_to_die || table->philos[i].must_eat == 0)
-			{
-				printf("%ld %d is died\n", timestamp_ms(table->timestamp), table->philos[i].id);
-				exit(EXIT_SUCCESS);
-			}
-			i++;
-		}
-	}
-	return (data);
-}
-
-static	void	*pthreading(void *data)
-{
-	eating((t_philo *)data);
-	return (data);
-}
-
 int	main(int argc, char *argv[])
 {
 	t_table *table;
-	int i;
 
 	if (argc < 5 || argc > 6)
 	{
@@ -64,21 +35,9 @@ int	main(int argc, char *argv[])
 		table = set_table(argc, argv);
 	
 	gettimeofday(&table->timestamp->start, NULL);
-	pthread_create(&table->philos[0].pthread_id, NULL, observer, table);
-	// table_status(table);
 
-	i = 0;
-	while (i < table->number_of_philos)
-	{
-		pthread_create(&table->philos[i + 1].pthread_id, NULL, pthreading, &table->philos[i]);
-		i++;
-	}
-	i = 0;
-	while (i < table->number_of_philos)
-	{
-		pthread_join(table->philos[i + 1].pthread_id, NULL);
-		i++;
-	}
-	
+	philosopher_doing(table);
+	philosopher_end(table);
+	system("leaks philo > leaks_result_temp; cat leaks_result_temp | grep leaked && rm -rf leaks_result_temp");
 	return 0;
 }

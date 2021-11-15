@@ -19,11 +19,10 @@ INCFLAGS = -I./includes
 RM = rm -fv
 
 SRCS_PATH = ./srcs/
-SRCS_FNAME = main.c table.c fork.c pthread.c philosophers.c timestamp.c
-# queue.c
+SRCS_FNAME = main.c table.c pthread.c philosophers.c timestamp.c
 
-LIST_PATH = $(addprefix $(SRCS_PATH), list/)
-LIST_FNAME = ft_lstnew.c ft_lstsize.c ft_lstadd_back.c ft_lstlast.c
+# LIST_PATH = $(addprefix $(SRCS_PATH), list/)
+# LIST_FNAME = ft_lstnew.c ft_lstsize.c ft_lstadd_back.c ft_lstlast.c
 
 UTILS_PATH = $(addprefix $(SRCS_PATH), utils/)
 UTILS_FNAME = ft_atoi.c ft_bzero.c ft_calloc.c
