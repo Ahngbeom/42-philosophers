@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/09 13:26:45 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/16 15:09:41 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@
 # include <stdlib.h>
 
 typedef struct s_table t_table;
-typedef struct s_list t_list;
 typedef struct s_philo t_philo;
 typedef	struct s_timestamp t_timestamp;
-
-// t_timestamp timestamp;
 
 struct s_table
 {
@@ -43,7 +40,6 @@ struct s_table
 	int	time_to_eat;
 	int	time_to_sleep;
 
-	pthread_t *pthread_id;
 	t_philo *philos;
 
 	pthread_mutex_t *fork_mutex;
@@ -52,12 +48,6 @@ struct s_table
 	t_timestamp *timestamp;
 
 	unsigned int died_philosopher;
-};
-
-struct s_list
-{
-	void			*content;
-	struct s_list	*next;
 };
 
 struct s_philo
@@ -79,48 +69,26 @@ struct s_timestamp
 	struct	timeval end;
 };
 
-// Table
-t_table	*set_table(int argc, char **argv);
-void	table_status(t_table *table);
+void	set_table(t_table *table, int argc, char *argv[]);
 
-// Queue
-pthread_t	*queue_init(int size);
-void	queue_status(pthread_t *queue, int size);
-void	queue_rotate(pthread_t *queue, int size);
+void	philosophers_init(t_table *table, int must_eat);
+void    philosophers_running(t_table *table);
+void    philosophers_stop(t_table *table);
 
-// Philosopher
-t_philo	*philosopher_init(t_table *table, int time_to_die, int must_eat);
-t_philo *create_philosopher(int id, int time_to_die, int must_eat);
-int	death_check_philosophers(t_table *table);
+void    *pthreadding(void *data);
 
-// Timestamp
-long int	timestamp_ms(t_timestamp *timestamp);
+int taken_a_fork(t_philo *philo);
+int eating(t_philo *philo);
+int sleeping(t_philo *philo);
+int thinking(t_philo *philo);
 
-void	philosopher_doing(t_table *table);
-void	philosopher_end(t_table *table);
-
-// Pthreading
-void	*pthreading(void *data);
-
-void	taken_fork(t_philo *philo);
-int	eating(t_philo *philo);
-int	sleeping(t_philo *philo);
-void	thinking(t_philo *philo);
-
-// void	*pthreading(void *data);
-void	*pthread_eating(void *data);
-void	*pthread_sleeping(void *data);
-void	*pthread_thinking(void *data);
-
-// List
-t_list	*ft_lstnew(void *content);
-int	ft_lstsize(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-t_list	*ft_lstlast(t_list *lst);
+long timestamp_ms(t_timestamp *timestamp);
 
 // Utils
 int	ft_atoi(char *str);
 void	*ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
+void	ft_error(char *err_msg);
+void    ft_free(t_table *table);
 
 #endif

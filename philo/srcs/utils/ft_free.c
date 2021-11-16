@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   timestamp.c                                        :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/27 16:06:46 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/08 14:00:34 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/16 13:31:14 by bahn              #+#    #+#             */
+/*   Updated: 2021/11/16 13:35:39 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-long int	timestamp_ms(t_timestamp *timestamp)
+void    ft_free(t_table *table)
 {
-	long int time;
+    int i;
 
-	gettimeofday(&timestamp->end, NULL);
-	time = ((((timestamp->end.tv_sec - timestamp->start.tv_sec) * 1000000) + timestamp->end.tv_usec) - timestamp->start.tv_usec) / 1000;
-	return (time);
+    i = -1;
+    while (++i < table->number_of_philos)
+    {
+        free(table->philos[i].last_eat_time);
+	    free(table->philos[i].timestamp);
+        table->philos[i].table = NULL;
+        pthread_mutex_destroy(&table->fork_mutex[i]);
+    }
+    free(table->philos);
+    pthread_mutex_destroy(&table->die_check_mutex);
+    free(table->timestamp);
 }
