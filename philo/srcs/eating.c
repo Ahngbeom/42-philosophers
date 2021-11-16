@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 14:44:44 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/16 16:05:03 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/16 16:41:12 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int eating(t_philo *philo)
         pthread_mutex_unlock(&philo->table->die_check_mutex);
         if (timestamp_ms(philo->timestamp) >= philo->table->time_to_eat)
             break ;
-        // usleep(10);
     }
     if (philo->table->died_philosopher > 0)
         return (++philo->table->died_philosopher);

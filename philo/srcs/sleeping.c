@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 14:44:27 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/16 16:05:05 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/16 16:33:10 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ int sleeping(t_philo *philo)
     {
         if (timestamp_ms(philo->timestamp) >= philo->table->time_to_sleep)
             break ;
-        // usleep(10);
     }
     if (philo->table->died_philosopher > 0)
-        return (philo->table->died_philosopher++);
+        return (++philo->table->died_philosopher);
     return (0);
 }

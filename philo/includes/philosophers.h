@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/16 15:09:41 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/16 16:19:04 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ struct s_timestamp
 	struct	timeval end;
 };
 
+
 void	set_table(t_table *table, int argc, char *argv[]);
 
 void	philosophers_init(t_table *table, int must_eat);
@@ -88,6 +89,7 @@ long timestamp_ms(t_timestamp *timestamp);
 int	ft_atoi(char *str);
 void	*ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
+void    ft_exception(void);
 void	ft_error(char *err_msg);
 void    ft_free(t_table *table);
 

@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 13:36:20 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/16 15:52:12 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/16 16:30:14 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,14 @@ void    *pthreadding(void *data)
     gettimeofday(&philo->last_eat_time->start, NULL);
     while (philo->table->died_philosopher == 0)
     {
-        taken_a_fork(philo);
+        if (taken_a_fork(philo) != 0)
+            break ;
         if (eating(philo) != 0)
-        {
             break ;
-        }
         if (sleeping(philo) != 0)
-        {
             break ;
-        }
-        thinking(philo);
+        if (thinking(philo) != 0)
+            break ;
     }
     return (data);
 }
