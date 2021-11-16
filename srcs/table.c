@@ -42,6 +42,6 @@ t_table	*set_table(int argc, char **argv)
 			pthread_mutex_init(&table->fork_mutex[i], NULL);
 	}
 	table->timestamp = malloc(sizeof(t_timestamp));
-	table->died_cnt = 0;
+	table->died_philosopher = 0;
 	return (table);
 }

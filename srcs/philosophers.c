@@ -50,7 +50,7 @@ void	philosopher_doing(t_table *table)
 	}
 	while (1)
 	{
-		if (table->died_cnt > 0)
+		if (table->died_philosopher > 0)
 			break;
 	}
 }

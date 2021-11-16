@@ -51,7 +51,7 @@ struct s_table
 
 	t_timestamp *timestamp;
 
-	unsigned int died_cnt;
+	unsigned int died_philosopher;
 };
 
 struct s_list
@@ -103,8 +103,8 @@ void	philosopher_end(t_table *table);
 void	*pthreading(void *data);
 
 void	taken_fork(t_philo *philo);
-void	eating(t_philo *philo);
-void	sleeping(t_philo *philo);
+int	eating(t_philo *philo);
+int	sleeping(t_philo *philo);
 void	thinking(t_philo *philo);
 
 // void	*pthreading(void *data);
