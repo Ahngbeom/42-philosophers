@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/16 16:19:04 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/18 23:40:51 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,24 @@ struct s_table
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
+	pthread_mutex_t *fork_mutex;
 
 	t_philo *philos;
+	int died_philosopher;
+	// pthread_mutex_t die_check_mutex;
 
-	pthread_mutex_t *fork_mutex;
-	pthread_mutex_t die_check_mutex;
-
-	t_timestamp *timestamp;
-
-	unsigned int died_philosopher;
+	int	timestamp;
 };
 
 struct s_philo
 {
 	pthread_t pthread_id;
-	pthread_t observer_pth_id;
+	pthread_t observer_id;
 	int id;
 	int	must_eat;
-
+	int	last_eat_time;
+	pthread_mutex_t die_check_mutex;
 	t_table *table;
-
-	t_timestamp *timestamp;
-	t_timestamp *last_eat_time;
 };
 
 struct s_timestamp
@@ -77,13 +73,14 @@ void    philosophers_running(t_table *table);
 void    philosophers_stop(t_table *table);
 
 void    *pthreadding(void *data);
+void    *observer(void *data);
 
 int taken_a_fork(t_philo *philo);
 int eating(t_philo *philo);
 int sleeping(t_philo *philo);
 int thinking(t_philo *philo);
 
-long timestamp_ms(t_timestamp *timestamp);
+int timestamp_ms(void);
 
 // Utils
 int	ft_atoi(char *str);

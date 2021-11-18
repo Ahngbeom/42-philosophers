@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 13:31:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/16 13:35:39 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/19 00:08:48 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ void    ft_free(t_table *table)
     i = -1;
     while (++i < table->number_of_philos)
     {
-        free(table->philos[i].last_eat_time);
-	    free(table->philos[i].timestamp);
-        table->philos[i].table = NULL;
+        // pthread_mutex_destroy(&table->philos[i].die_check_mutex);
         pthread_mutex_destroy(&table->fork_mutex[i]);
+        pthread_mutex_destroy(&table->philos[i].die_check_mutex);
+        table->philos[i].table = NULL;
     }
     free(table->philos);
-    pthread_mutex_destroy(&table->die_check_mutex);
-    free(table->timestamp);
 }
