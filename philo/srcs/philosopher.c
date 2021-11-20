@@ -6,13 +6,13 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 12:14:07 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/18 23:41:48 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/20 14:32:44 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void    philosophers_init(t_table *table, int must_eat)
+void    philosophers_init(t_table *table)
 {
     int i;
 
@@ -23,18 +23,17 @@ void    philosophers_init(t_table *table, int must_eat)
     while (++i < table->number_of_philos)
     {
         table->philos[i].id = i + 1;
-        table->philos[i].must_eat = must_eat;
+        table->philos[i].must_eat = table->must_eat;
         table->philos[i].table = table;
         table->philos[i].last_eat_time = 0;
-        pthread_mutex_init(&table->philos[i].die_check_mutex, NULL);
+        pthread_mutex_init(&table->philos[i].died_mutex, NULL);
         pthread_mutex_init(&table->fork_mutex[i], NULL);
     }
 }
 
-void    philosophers_running(t_table *table)
+void    philosophers_doing(t_table *table)
 {
     int i;
-    int rtn;
 
     table->timestamp = timestamp_ms();
     i = -1;
@@ -53,17 +52,13 @@ void    philosophers_running(t_table *table)
     i = -1;
     while (++i < table->number_of_philos)
     {
-        // pthread_join(table->philos[i].pthread_id, NULL);
-        // pthread_join(table->philos[i].observer_id, NULL);
-        if ((rtn = pthread_join(table->philos[i].pthread_id, NULL)))
+        if (pthread_join(table->philos[i].pthread_id, NULL) != 0)
         {
-            printf("%d : ", rtn);
-            ft_error("pthread philo join error");
+            ft_error("pthread join error");
         }
-        if ((rtn = pthread_join(table->philos[i].observer_id, NULL)))
+        if (pthread_join(table->philos[i].observer_id, NULL) != 0)
         {
-            printf("%d : ", rtn);
-            ft_error("pthread observer join error");
+            ft_error("pthread join error");
         }
     }
 }

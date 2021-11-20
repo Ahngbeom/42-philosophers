@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 13:36:20 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/18 23:41:56 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/20 14:34:24 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,21 @@ void    *observer(void *data)
     t_philo *philo;
 
     philo = data;
-    while (1)
+    while (philo->table->died_philos == 0)
     {
-        pthread_mutex_lock(&philo->die_check_mutex);
-        if (philo->table->died_philosopher > 0)
+        pthread_mutex_lock(&philo->died_mutex);
+        if (timestamp_ms() - philo->last_eat_time >= philo->table->time_to_die)
         {
-            philo->table->died_philosopher++;
+            pthread_mutex_lock(&philo->table->status_mutex);
+            if (philo->table->died_philos == 0)
+                printf("%d %d is died\n", timestamp_ms() - philo->table->timestamp, philo->id);
+            philo->table->died_philos++;
+            pthread_mutex_unlock(&philo->table->status_mutex);
+            pthread_mutex_unlock(&philo->died_mutex);
             break ;
         }
-        else if (timestamp_ms() - philo->last_eat_time >= philo->table->time_to_die)
-        {
-            philo->table->died_philosopher++;
-            printf("%d %d is died\n", timestamp_ms() - philo->table->timestamp, philo->id);
-            break ;
-        }
-        pthread_mutex_unlock(&philo->die_check_mutex);
+        pthread_mutex_unlock(&philo->died_mutex);
     }
-    pthread_join(philo->pthread_id, NULL);
     return (data);
 }
 
@@ -43,18 +41,18 @@ void    *pthreadding(void *data)
 
     philo = data;
     if (philo->id % 2 == 0)
-        usleep(10);
-    philo->last_eat_time = timestamp_ms();
-    while (philo->table->died_philosopher == 0)
+        usleep(1000);
+    while (philo->table->died_philos == 0)
     {
-        if (taken_a_fork(philo) != 0)
+        if (taken_a_fork(philo) > 0)
             break ;
-        if (eating(philo) != 0)
+        if (eating(philo) > 0 || philo->must_eat == 0)
             break ;
-        if (sleeping(philo) != 0)
+        if (sleeping(philo) > 0)
             break ;
-        if (thinking(philo) != 0)
+        if (thinking(philo) > 0)
             break ;
     }
+    philo->table->died_philos++;
     return (data);
 }

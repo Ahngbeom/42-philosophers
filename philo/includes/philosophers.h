@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:34:30 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/18 23:40:51 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/20 14:21:03 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ struct s_table
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
+	int must_eat;
 	pthread_mutex_t *fork_mutex;
+	pthread_mutex_t status_mutex;
 
 	t_philo *philos;
-	int died_philosopher;
-	// pthread_mutex_t die_check_mutex;
+	int died_philos;
 
 	int	timestamp;
 };
@@ -55,7 +56,7 @@ struct s_philo
 	int id;
 	int	must_eat;
 	int	last_eat_time;
-	pthread_mutex_t die_check_mutex;
+	pthread_mutex_t died_mutex;
 	t_table *table;
 };
 
@@ -68,8 +69,8 @@ struct s_timestamp
 
 void	set_table(t_table *table, int argc, char *argv[]);
 
-void	philosophers_init(t_table *table, int must_eat);
-void    philosophers_running(t_table *table);
+void	philosophers_init(t_table *table);
+void    philosophers_doing(t_table *table);
 void    philosophers_stop(t_table *table);
 
 void    *pthreadding(void *data);

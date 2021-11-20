@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 15:05:22 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/18 13:01:03 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/20 14:21:11 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int thinking(t_philo *philo)
 {
-    printf("%d %d is thinking\n", timestamp_ms() - philo->table->timestamp, philo->id);
-    if (philo->table->died_philosopher > 0)
-        return (1);
-    return (0);
+    pthread_mutex_lock(&philo->table->status_mutex);
+    if (philo->table->died_philos == 0)
+        printf("%d %d is thinking\n", timestamp_ms() - philo->table->timestamp, philo->id);
+    pthread_mutex_unlock(&philo->table->status_mutex);
+    return (philo->table->died_philos);
 }
