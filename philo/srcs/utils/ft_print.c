@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/27 13:24:07 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/02 13:25:00 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/21 03:22:07 by bahn              #+#    #+#             */
+/*   Updated: 2021/11/21 04:03:22 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void    ft_print(t_table *table, int philo_id, char *action)
 {
-	void	*ptr;
-
-	ptr = malloc(size * nmemb);
-	if (!ptr)
-		return (NULL);
-	// ft_bzero(ptr, size * nmemb);
-	memset(ptr, 0, size * nmemb);
-	return (ptr);
+    pthread_mutex_lock(&table->print_mutex);
+    if (table->died_philos == 0)
+        printf("%d %d %s\n", time_ms() - table->begin_time, philo_id, action);
+    pthread_mutex_unlock(&table->print_mutex);
 }

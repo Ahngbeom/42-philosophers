@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/10/21 18:20:36 by bahn              #+#    #+#              #
-#    Updated: 2021/11/20 11:47:21 by bahn             ###   ########.fr        #
+#    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
+#    Updated: 2021/11/21 04:04:14 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,24 +19,26 @@ INCFLAGS = -I./includes
 RM = rm -fv
 
 SRCS_PATH = ./srcs/
-SRCS_FNAME = main.c table.c philosopher.c pthread.c timestamp.c \
-			taken_a_fork.c eating.c sleeping.c thinking.c
+SRCS_FNAME = main.c table.c philosophers.c pthread.c \
+			taken_a_fork.c \
+			time_ms.c
 
 UTILS_PATH = $(addprefix $(SRCS_PATH), utils/)
-UTILS_FNAME = ft_atoi.c ft_bzero.c ft_calloc.c ft_exception.c ft_error.c ft_free.c
+UTILS_FNAME = ft_atoi.c ft_print.c \
+				ft_error.c ft_exception.c ft_free.c
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FNAME)) \
-		$(addprefix $(UTILS_PATH), $(UTILS_FNAME)) \
-		$(addprefix $(LIST_PATH), $(LIST_FNAME))
+		$(addprefix $(UTILS_PATH), $(UTILS_FNAME))
 OBJS = $(SRCS:.c=.o)
 
 all : $(NAME)
 
 .c.o : $(SRCS)
-		$(CC) $(CFLAGS) $(INCFLAGS) -c $< -o $@
+		$(CC) $(CFLAGS) $(INCFLAGS) -c $^ -o $@
 
 $(NAME) : $(OBJS)
-		$(CC) $(CFLAGS) $(INCFLAGS) $^ -lpthread -o $@
+		$(CC) $(CFLAGS) $(INCFLAGS) $^ -o $@
+
 clean : 
 		$(RM) $(OBJS)
 
@@ -46,5 +48,3 @@ fclean : clean
 re : fclean all
 
 .PHONY : all clean fclean re
-
-

@@ -5,15 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 12:19:39 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/16 12:21:07 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/20 19:05:16 by bahn              #+#    #+#             */
+/*   Updated: 2021/11/20 19:49:19 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void    ft_error(char *err_msg)
+void    ft_error(t_table *table, char *message)
 {
-    printf("Error : %s\n", err_msg);
+    printf("Error >>> ");
+    printf("%s\n", message);
+    ft_free(table);
     exit(EXIT_FAILURE);
 }
