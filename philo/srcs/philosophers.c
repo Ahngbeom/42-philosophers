@@ -6,13 +6,13 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 04:52:48 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/21 19:49:26 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-t_philo *philosophers_init(t_table *table, char *arg_must_eat)
+t_philo *philosophers_init(t_table *table)
 {
     t_philo *philos;
     int i;
@@ -22,14 +22,7 @@ t_philo *philosophers_init(t_table *table, char *arg_must_eat)
     while (++i < table->number_of_philos)
     {
         philos[i].id = i + 1;
-        if (arg_must_eat == NULL)
-            philos[i].must_eat = -1;
-        else
-        {
-            philos[i].must_eat = ft_atoi(arg_must_eat);
-            if (philos[i].must_eat < 0)
-                ft_exception("Invalid argument for Philosophers program");
-        }
+        philos[i].eat_count = 0;
         philos[i].table = table;
         if (pthread_mutex_init(&table->fork_mutex[i], NULL) != 0)
             ft_error(table, "pthread mutex init");
