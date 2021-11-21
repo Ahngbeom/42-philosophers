@@ -6,21 +6,21 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
-#    Updated: 2021/11/21 04:04:14 by bahn             ###   ########.fr        #
+#    Updated: 2021/11/21 20:19:54 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra
 INCFLAGS = -I./includes
 
 RM = rm -fv
 
 SRCS_PATH = ./srcs/
 SRCS_FNAME = main.c table.c philosophers.c pthread.c \
-			taken_a_fork.c \
+			taken_a_fork.c eating.c sleeping.c thinking.c \
 			time_ms.c
 
 UTILS_PATH = $(addprefix $(SRCS_PATH), utils/)
