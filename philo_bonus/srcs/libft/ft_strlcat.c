@@ -1,21 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print.c                                         :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 03:22:07 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:20:31 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/23 14:57:13 by bahn              #+#    #+#             */
+/*   Updated: 2021/11/23 14:57:20 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-void    ft_print(t_table *table, int philo_id, char *action)
+size_t	ft_strlcat(char *dest, char *src, size_t size)
 {
-    pthread_mutex_lock(&table->print_mutex);
-    if (died_philos == 0)
-        printf("%d %d %s\n", time_ms() - table->begin_time, philo_id, action);
-    pthread_mutex_unlock(&table->print_mutex);
+	size_t	i;
+	size_t	j;
+	size_t	dest_len;
+
+	i = 0;
+	j = 0;
+	dest_len = (size_t)ft_strlen(dest);
+	if (dest_len > size)
+		return (ft_strlen(src) + size);
+	while (dest[i] != '\0')
+		i++;
+	while (j + dest_len + 1 < size && src[j] != '\0')
+	{
+		dest[i] = src[j++];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest_len + ft_strlen(src));
 }

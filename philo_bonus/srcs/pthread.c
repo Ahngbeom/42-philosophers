@@ -6,25 +6,26 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:41:03 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 23:32:58 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/24 01:19:59 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 void    *observer(void *data)
 {
     t_philo *philo;
 
     philo = data;
-    while (philo->table->died_philos == 0)
+    while (died_philos == 0)
     {
         pthread_mutex_lock(&philo->died_mutex);
-        if (time_ms() - philo->last_eat_time >= philo->table->time_to_die)
+        if (time_ms() - philo->last_eat_time >= table->time_to_die)
         {
-            ft_print(philo->table, philo->id, "died");
-            philo->table->died_philos++;
+            ft_print(table, philo->id, "died");
+            ++died_philos;
             pthread_mutex_unlock(&philo->died_mutex);
+            printf("[focus philoID %d] died philos : %d\n", philo->id, died_philos);
             break ;
         }
         pthread_mutex_unlock(&philo->died_mutex);
@@ -39,12 +40,14 @@ void    *pthreadding(void *data)
 
     philo = data;
     if (philo->id % 2 == 0)
+    {
         usleep(1000);
-    while (philo->table->died_philos == 0)
+    }
+    while (died_philos == 0)
     {
         if (taken_a_fork(philo) != 0)
             break ;
-        if (eating(philo) != 0 || must_eat_checker(philo->table))
+        if (eating(philo) != 0 || must_eat_checker(table))
             break ;
         if (sleeping(philo) != 0)
             break ;

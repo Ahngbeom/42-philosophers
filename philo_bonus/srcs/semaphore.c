@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   semaphore.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:16:31 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/23 15:34:04 by bahn              #+#    #+#             */
+/*   Updated: 2021/11/24 01:04:56 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-t_philo *philosophers_init(t_table *table)
+sem_t   **fork_init(int count)
 {
-    t_philo *philos;
+    sem_t   **sem_fork;
     int i;
 
-    philos = malloc(sizeof(t_philo) * table->number_of_philos);
+    sem_fork = malloc(sizeof(sem_t *) * count);
+    i = -1;
+    while (++i < count)
+    {
+        sem_fork[i] = sem_open(ft_strjoin("fork_", ft_itoa(i)), O_CREAT, 0777, 1);
+    }
+    return (sem_fork);
+}
+
+void    fork_remove(t_table *table)
+{
+    int i;
+
     i = -1;
     while (++i < table->number_of_philos)
     {
-        philos[i].id = i + 1;
-        philos[i].eat_count = 0;
-        // philos[i].table = table;
-        if (pthread_mutex_init(&philos[i].died_mutex, NULL) != 0)
-            ft_error(table, "pthread mutex init");
+        sem_close(sem_fork[i]);
+        sem_unlink(ft_strjoin("fork_", ft_itoa(i)));
     }
-    return (philos);
+    system("ls /dev/shm");
 }
