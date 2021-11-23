@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 19:49:33 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/22 21:50:57 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef PHILOSOPHERS_BONUS_H
+# define PHILOSOPHERS_BONUS_H
 
 # include <pthread.h>
+# include <semaphore.h>
+# include <fcntl.h>
+# include <sys/stat.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
@@ -31,7 +34,7 @@ struct s_table
     int time_to_sleep;
     int must_eat;
     int begin_time;
-    pthread_mutex_t *fork_mutex;
+    sem_t *fork_semaphore;
     pthread_mutex_t print_mutex;
     
     t_philo *philos;
