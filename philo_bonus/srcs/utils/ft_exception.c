@@ -6,11 +6,11 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:32:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 21:18:55 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/22 21:13:39 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 void    ft_exception(char *message)
 {

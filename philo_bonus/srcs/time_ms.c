@@ -6,11 +6,11 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 03:29:12 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 03:30:33 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/22 21:37:51 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 int time_ms(void)
 {

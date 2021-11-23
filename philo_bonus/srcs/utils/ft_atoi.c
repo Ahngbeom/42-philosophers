@@ -6,11 +6,11 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 14:40:23 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 21:25:28 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/22 21:13:27 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 static	char	*ft_isspace(char *str)
 {
