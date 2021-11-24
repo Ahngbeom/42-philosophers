@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 03:22:07 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:20:31 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/24 23:42:22 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void    ft_print(t_table *table, int philo_id, char *action)
 {
-    pthread_mutex_lock(&table->print_mutex);
-    if (died_philos == 0)
+    sem_wait(table->sem_print);
+    if (*(int *)table->alive_philos == table->number_of_philos)
         printf("%d %d %s\n", time_ms() - table->begin_time, philo_id, action);
-    pthread_mutex_unlock(&table->print_mutex);
+    sem_post(table->sem_print);
 }

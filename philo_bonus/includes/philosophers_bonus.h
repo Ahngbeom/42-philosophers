@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:21:59 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/24 22:07:17 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <stdio.h>
-# include <stdlib.h>
 
 # define PARENT_PROC 1
 # define CHILD_PROC 0
@@ -31,9 +30,10 @@
 typedef struct s_table t_table;
 typedef struct s_philo t_philo;
 
-sem_t **sem_fork;
-t_table *table;
-int died_philos;
+// sem_t **sem_fork;
+pid_t *child_pid;
+int test;
+
 struct s_table
 {
     int number_of_philos;
@@ -42,11 +42,14 @@ struct s_table
     int time_to_sleep;
     int must_eat;
     int begin_time;
-    // sem_t **sem_fork;
-    pthread_mutex_t print_mutex;
+    sem_t *sem_fork;
+    // pthread_mutex_t print_mutex;
+    sem_t *sem_print;
+    sem_t *terminate;
+    sem_t *alive_philos;
+    sem_t *eat_finished_philos;
     
     t_philo *philos;
-    // int died_philos;
 };
 
 struct s_philo
@@ -57,9 +60,11 @@ struct s_philo
     int eat_count;
     int last_eat_time;
     int timestamp;
-    pthread_mutex_t died_mutex;
+    int died;
+    // pthread_mutex_t died_mutex;
+    sem_t *sem_died;
 
-    // t_table *table;
+    t_table *table;
 };
 
 void    ft_exception(char *message);
@@ -89,7 +94,7 @@ int eating(t_philo *philo);
 int sleeping(t_philo *philo);
 int thinking(t_philo *philo);
 
-int must_eat_checker(t_table *table);
+int must_eat_checker(t_table *table, int eat_count);
 
 void    ft_print(t_table *table, int philo_id, char *action);
 

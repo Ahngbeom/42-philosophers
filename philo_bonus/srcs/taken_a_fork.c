@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 03:20:22 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:20:20 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/24 21:20:19 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 int taken_a_fork(t_philo *philo)
 {
-    if (table->number_of_philos == 1)
+    if (philo->table->number_of_philos == 1)
     {
-        ft_print(table, philo->id, "has taken a fork");
-        while (died_philos == 0)
+        ft_print(philo->table, philo->id, "has taken a fork");
+        while (philo->died == 0)
             usleep(10);
         return (1);
     }
-    sem_wait(sem_fork[philo->id - 1]);
-    ft_print(table, philo->id, "has taken a fork");
-    sem_wait(sem_fork[philo->id % table->number_of_philos]);
-    ft_print(table, philo->id, "has taken a fork");
-    return (0);
+    sem_wait(philo->table->sem_fork);
+    ft_print(philo->table, philo->id, "has taken a fork");
+    sem_wait(philo->table->sem_fork);
+    ft_print(philo->table, philo->id, "has taken a fork");
+    return (philo->died);
 }

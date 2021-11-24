@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:29:08 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:19:37 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/24 23:41:44 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,27 @@ t_table *table_setting(int argc, char *argv[])
         ft_exception("Invalid argument for Philosophers program");
         free(table);
     }
+    sem_unlink("alive_philos");
+    sem_unlink("fork");
+    sem_unlink("print");
+    sem_unlink("terminate");
+    sem_unlink("eat_finished_philos");
+    table->alive_philos = sem_open("alive_philos", O_CREAT | O_EXCL, 0777, table->number_of_philos);
+    table->sem_fork = sem_open("fork", O_CREAT | O_EXCL, 0777, table->number_of_philos);
+    table->sem_print = sem_open("print", O_CREAT | O_EXCL, 0777, 1);
+    table->terminate = sem_open("terminate", O_CREAT | O_EXCL, 0777, table->number_of_philos);
     if (argc == 5)
+    {
         table->must_eat = -1;
+        table->eat_finished_philos = NULL;
+    }
     else
     {
         table->must_eat = ft_atoi(argv[5]);
-        if (table->must_eat < 0)
-            ft_exception("Invalid argument for Philosophers program");
+        table->eat_finished_philos = sem_open("eat_finished_philos", O_CREAT | O_EXCL, 0777, table->number_of_philos);
     }
-    // table->died_philos = 0;
-    sem_fork = fork_init(table->number_of_philos);
     system("ls /dev/shm"); //Linux
     // system("ls /dev/sem");
-    pthread_mutex_init(&table->print_mutex, NULL);
     table->philos = philosophers_init(table);
     return (table);
 }

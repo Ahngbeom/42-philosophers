@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:16:31 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/24 19:49:51 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,13 @@ t_philo *philosophers_init(t_table *table)
     {
         philos[i].id = i + 1;
         philos[i].eat_count = 0;
-        // philos[i].table = table;
-        if (pthread_mutex_init(&philos[i].died_mutex, NULL) != 0)
-            ft_error(table, "pthread mutex init");
+        philos[i].table = table;
+        sem_unlink(ft_strjoin("died_", ft_itoa(philos[i].id)));
+        philos[i].sem_died = sem_open(ft_strjoin("died_", ft_itoa(philos[i].id)), O_CREAT | O_EXCL, 0777, 1);
+        system("ls /dev/shm"); //Linux
+        if (philos[i].sem_died == NULL)
+            ft_error(table, "semaphore open");
+        sem_wait(philos[i].table->terminate);
     }
     return (philos);
 }

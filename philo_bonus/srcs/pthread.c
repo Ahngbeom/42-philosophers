@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:41:03 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 01:19:59 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/24 23:28:09 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,27 @@ void    *observer(void *data)
     t_philo *philo;
 
     philo = data;
-    while (died_philos == 0)
+    
+    while (*(int *)philo->table->alive_philos == philo->table->number_of_philos)
     {
-        pthread_mutex_lock(&philo->died_mutex);
-        if (time_ms() - philo->last_eat_time >= table->time_to_die)
+        sem_wait(philo->sem_died);
+        if (philo->table->must_eat == philo->eat_count)
         {
-            ft_print(table, philo->id, "died");
-            ++died_philos;
-            pthread_mutex_unlock(&philo->died_mutex);
-            printf("[focus philoID %d] died philos : %d\n", philo->id, died_philos);
-            break ;
+            sem_post(philo->sem_died);
+            return (data);
         }
-        pthread_mutex_unlock(&philo->died_mutex);
+        if (time_ms() - philo->last_eat_time >= philo->table->time_to_die)
+        {
+            ft_print(philo->table, philo->id, "died");
+            sem_wait(philo->table->alive_philos);
+            philo->died++;
+            sem_post(philo->sem_died);
+            return (data);
+        }
+        sem_post(philo->sem_died);
         usleep(10);
     }
+    sem_wait(philo->table->alive_philos);
     return (data);
 }
 
@@ -43,11 +50,11 @@ void    *pthreadding(void *data)
     {
         usleep(1000);
     }
-    while (died_philos == 0)
+    while (philo->died == 0)
     {
         if (taken_a_fork(philo) != 0)
             break ;
-        if (eating(philo) != 0 || must_eat_checker(table))
+        if (eating(philo) != 0 || must_eat_checker(philo->table, philo->eat_count))
             break ;
         if (sleeping(philo) != 0)
             break ;
