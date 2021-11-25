@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 22:07:17 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/25 23:25:29 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@
 typedef struct s_table t_table;
 typedef struct s_philo t_philo;
 
-// sem_t **sem_fork;
-pid_t *child_pid;
-int test;
-
 struct s_table
 {
     int number_of_philos;
@@ -43,7 +39,6 @@ struct s_table
     int must_eat;
     int begin_time;
     sem_t *sem_fork;
-    // pthread_mutex_t print_mutex;
     sem_t *sem_print;
     sem_t *terminate;
     sem_t *alive_philos;
@@ -61,8 +56,7 @@ struct s_philo
     int last_eat_time;
     int timestamp;
     int died;
-    // pthread_mutex_t died_mutex;
-    sem_t *sem_died;
+    pthread_mutex_t died_mutex;
 
     t_table *table;
 };
@@ -80,11 +74,10 @@ char	*ft_strjoin(char const *s1, char const *s2);
 
 t_table *table_setting(int argc, char *argv[]);
 
-sem_t   **fork_init(int count);
-void    fork_remove(t_table *table);
-
 t_philo *philosophers_init(t_table *table);
-void    philosophers_doing(t_table *table);
+int philosophers_doing(t_table *table);
+
+void    semaphore_init_on_table(t_table *table, int must_eat);
 
 void    *pthreadding(void *data);
 void    *observer(void *data);

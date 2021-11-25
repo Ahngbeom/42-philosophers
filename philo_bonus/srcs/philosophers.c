@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 19:49:51 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/25 21:30:05 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,50 @@ t_philo *philosophers_init(t_table *table)
         philos[i].id = i + 1;
         philos[i].eat_count = 0;
         philos[i].table = table;
-        sem_unlink(ft_strjoin("died_", ft_itoa(philos[i].id)));
-        philos[i].sem_died = sem_open(ft_strjoin("died_", ft_itoa(philos[i].id)), O_CREAT | O_EXCL, 0777, 1);
-        system("ls /dev/shm"); //Linux
-        if (philos[i].sem_died == NULL)
-            ft_error(table, "semaphore open");
+        pthread_mutex_init(&philos[i].died_mutex, NULL);
         sem_wait(philos[i].table->terminate);
     }
     return (philos);
+}
+static  void    doing_on_pthread(t_philo *philo)
+{
+    philo->last_eat_time = time_ms();
+    if (pthread_create(&philo->pthread_id, NULL, pthreadding, philo) != 0)
+        ft_error(philo->table, "pthread create");
+    if (pthread_create(&philo->observer_id, NULL, observer, philo) != 0)
+        ft_error(philo->table, "pthread create");
+}
+
+static  void    join_of_pthread(t_philo *philo)
+{
+    if (pthread_join(philo->pthread_id, NULL) != 0)
+        ft_error(philo->table, "pthread join");
+    if (pthread_join(philo->observer_id, NULL) != 0)
+        ft_error(philo->table, "pthread join");
+    while (*(int *)philo->table->alive_philos > 0)
+        usleep(100);
+}
+int    philosophers_doing(t_table *table)
+{
+    int child_pid;
+    int i;
+
+    i = -1;
+    table->begin_time = time_ms();
+    while (++i < table->number_of_philos)
+    {
+        child_pid = fork();
+        if (child_pid == 0)
+        {
+            doing_on_pthread(&table->philos[i]);
+            break ;
+        }
+    }
+    if (child_pid == 0)
+    {
+        join_of_pthread(&table->philos[i]);
+        return (CHILD_PROC);
+    }
+    else
+        return (PARENT_PROC);
 }

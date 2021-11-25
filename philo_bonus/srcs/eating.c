@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 11:27:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 23:41:54 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/25 23:25:01 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int eating(t_philo *philo)
 {
-    sem_wait(philo->sem_died);
+    pthread_mutex_lock(&philo->died_mutex);
     ft_print(philo->table, philo->id, "is eating");
     philo->last_eat_time = time_ms();
     philo->eat_count++;
-    sem_post(philo->sem_died);
+    pthread_mutex_unlock(&philo->died_mutex);
     while (time_ms() - philo->last_eat_time <= philo->table->time_to_eat)
         usleep(1000);
     sem_post(philo->table->sem_fork);

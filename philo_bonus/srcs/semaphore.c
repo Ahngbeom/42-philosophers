@@ -6,35 +6,27 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:34:04 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 12:28:44 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/25 20:48:43 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-sem_t   **fork_init(int count)
+void    semaphore_init_on_table(t_table *table, int must_eat)
 {
-    sem_t   **sem_fork;
-    int i;
-
-    sem_fork = malloc(sizeof(sem_t *) * count);
-    i = -1;
-    while (++i < count)
-    {
-        sem_fork[i] = sem_open(ft_strjoin("fork_", ft_itoa(i)), O_CREAT, 0777, 1);
-    }
-    return (sem_fork);
-}
-
-void    fork_remove(t_table *table)
-{
-    int i;
-
-    i = -1;
-    while (++i < table->number_of_philos)
-    {
-        sem_close(sem_fork[i]);
-        sem_unlink(ft_strjoin("fork_", ft_itoa(i)));
-    }
-    system("ls /dev/shm");
+    sem_unlink("alive_philos");
+    sem_unlink("fork");
+    sem_unlink("print");
+    sem_unlink("terminate");
+    sem_unlink("eat_finished_philos");
+    table->alive_philos = sem_open("alive_philos", O_CREAT | O_EXCL, 0777, table->number_of_philos);
+    table->sem_fork = sem_open("fork", O_CREAT | O_EXCL, 0777, table->number_of_philos);
+    table->sem_print = sem_open("print", O_CREAT | O_EXCL, 0777, 1);
+    table->terminate = sem_open("terminate", O_CREAT | O_EXCL, 0777, table->number_of_philos);
+    if (must_eat == -1)
+        table->eat_finished_philos = NULL;
+    else
+        table->eat_finished_philos = sem_open("eat_finished_philos", O_CREAT | O_EXCL, 0777, table->number_of_philos);
+    // system("ls /dev/shm"); //Linux
+    // system("ls /dev/sem"); // Mac ?
 }
