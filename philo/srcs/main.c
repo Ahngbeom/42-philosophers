@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:29:09 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/22 13:14:13 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/26 12:18:18 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@ int main(int argc, char *argv[])
         ft_error(table, "malloc");
     philosophers_doing(table);
     ft_free(table);
-    system("leaks philo > leaks_result; cat leaks_result | grep leaked && rm -rf leaks_result");
+    // system("leaks philo > leaks_result; cat leaks_result | grep leaked && rm -rf leaks_result");
     return (0);
 }
