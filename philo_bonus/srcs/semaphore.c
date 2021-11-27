@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:34:04 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/25 20:48:43 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/27 22:55:53 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ void    semaphore_init_on_table(t_table *table, int must_eat)
         table->eat_finished_philos = NULL;
     else
         table->eat_finished_philos = sem_open("eat_finished_philos", O_CREAT | O_EXCL, 0777, table->number_of_philos);
-    // system("ls /dev/shm"); //Linux
-    // system("ls /dev/sem"); // Mac ?
+    // system("ls /dev/shm"); // Linux. MacOS is not create shm directory
 }

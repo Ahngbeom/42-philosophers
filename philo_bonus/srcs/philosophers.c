@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/25 21:30:05 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/27 13:49:52 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_philo *philosophers_init(t_table *table)
         philos[i].id = i + 1;
         philos[i].eat_count = 0;
         philos[i].table = table;
+        philos[i].died = 0;
         pthread_mutex_init(&philos[i].died_mutex, NULL);
         sem_wait(philos[i].table->terminate);
     }
