@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 19:49:26 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 15:15:37 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_philo *philosophers_init(t_table *table)
     {
         philos[i].id = i + 1;
         philos[i].eat_count = 0;
+        philos[i].ate = 0;
         philos[i].table = table;
         if (pthread_mutex_init(&table->fork_mutex[i], NULL) != 0)
             ft_error(table, "pthread mutex init");

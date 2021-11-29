@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/21 19:49:33 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 15:12:36 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ struct s_philo
     int id;
     int eat_count;
     int last_eat_time;
+    int ate;
     int timestamp;
     pthread_mutex_t died_mutex;
 
@@ -69,7 +70,7 @@ int eating(t_philo *philo);
 int sleeping(t_philo *philo);
 int thinking(t_philo *philo);
 
-int must_eat_checker(t_table *table);
+int must_eat_checker(t_table *table, t_philo *philo);
 
 void    ft_print(t_table *table, int philo_id, char *action);
 
