@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
-#    Updated: 2021/11/27 21:16:04 by bahn             ###   ########.fr        #
+#    Updated: 2021/11/29 19:36:51 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ INCFLAGS 	= -I./includes
 RM 			= rm -rfv
 
 SRCS_PATH 	= ./srcs/
-SRCS_FNAME 	= main.c table.c \
-				philosophers.c pthread.c semaphore.c \
+SRCS_FNAME 	= main.c table.c philosophers.c \
+				semaphore.c process.c pthread.c \
 				taken_a_fork.c eating.c sleeping.c thinking.c \
 				time_ms.c
 

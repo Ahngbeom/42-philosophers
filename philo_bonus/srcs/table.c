@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:29:08 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/25 20:50:01 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 19:54:32 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ t_table *table_setting(int argc, char *argv[])
         ft_exception("Invalid argument for Philosophers program");
         free(table);
     }
-    semaphore_init_on_table(table, table->must_eat);
+    table->someone_died = 0;
+    table->all_of_us_ate = 0;
+    semaphore_init_on_table(table);
     table->philos = philosophers_init(table);
     return (table);
 }

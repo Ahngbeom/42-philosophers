@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:29:52 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/25 19:44:57 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 22:26:44 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,12 @@ void    ft_free(t_table *table)
     }
     sem_close(table->sem_fork);
     sem_close(table->sem_print);
-    sem_close(table->terminate);
-    sem_close(table->alive_philos);
+    sem_close(table->sem_status);
+    sem_close(table->sem_died);
+    sem_close(table->sem_ate);
     sem_unlink("fork");
     sem_unlink("print");
-    sem_unlink("terminate");
-    sem_unlink("alive_philos");
-    if (table->must_eat != -1)
-    {
-        sem_close(table->eat_finished_philos);
-        sem_unlink("eat_finished_philos");
-    }
+    sem_unlink("status");
+    sem_unlink("died");
+    sem_unlink("ate");
 }

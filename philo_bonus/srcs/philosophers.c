@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/27 13:49:52 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 22:28:20 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,49 +26,26 @@ t_philo *philosophers_init(t_table *table)
         philos[i].table = table;
         philos[i].died = 0;
         pthread_mutex_init(&philos[i].died_mutex, NULL);
-        sem_wait(philos[i].table->terminate);
     }
     return (philos);
 }
-static  void    doing_on_pthread(t_philo *philo)
-{
-    philo->last_eat_time = time_ms();
-    if (pthread_create(&philo->pthread_id, NULL, pthreadding, philo) != 0)
-        ft_error(philo->table, "pthread create");
-    if (pthread_create(&philo->observer_id, NULL, observer, philo) != 0)
-        ft_error(philo->table, "pthread create");
-}
 
-static  void    join_of_pthread(t_philo *philo)
+int    philosophers_doing(t_philo *philo)
 {
-    if (pthread_join(philo->pthread_id, NULL) != 0)
-        ft_error(philo->table, "pthread join");
-    if (pthread_join(philo->observer_id, NULL) != 0)
-        ft_error(philo->table, "pthread join");
-    while (*(int *)philo->table->alive_philos > 0)
-        usleep(100);
-}
-int    philosophers_doing(t_table *table)
-{
-    int child_pid;
-    int i;
-
-    i = -1;
-    table->begin_time = time_ms();
-    while (++i < table->number_of_philos)
+    pthread_create(&philo->observer_id, NULL, observer, philo);
+    if (philo->id % 2 == 0)
+        usleep(1000);
+    while (philo->died == 0)
     {
-        child_pid = fork();
-        if (child_pid == 0)
-        {
-            doing_on_pthread(&table->philos[i]);
+        if (taken_a_fork(philo) != 0)
             break ;
-        }
+        if (eating(philo) != 0 || must_eat_checker(philo->table, philo->eat_count))
+            break ;
+        if (sleeping(philo) != 0)
+            break ;
+        if (thinking(philo) != 0)
+            break ;
     }
-    if (child_pid == 0)
-    {
-        join_of_pthread(&table->philos[i]);
-        return (CHILD_PROC);
-    }
-    else
-        return (PARENT_PROC);
+    pthread_detach(philo->observer_id);
+    return (0);
 }

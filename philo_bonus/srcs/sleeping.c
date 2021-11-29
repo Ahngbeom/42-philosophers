@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 11:43:49 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/24 20:36:59 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 21:48:58 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,5 @@ int sleeping(t_philo *philo)
     philo->timestamp = time_ms();
     while (time_ms() - philo->timestamp <= philo->table->time_to_sleep)
         usleep(1000);
-    return (philo->table->number_of_philos - *(int *)philo->table->alive_philos);
+    return (philo->died);
 }

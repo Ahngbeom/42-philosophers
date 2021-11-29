@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/25 23:25:29 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 22:04:13 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,25 @@ struct s_table
     int time_to_sleep;
     int must_eat;
     int begin_time;
+
+    pthread_t   mutex_died;
+    pthread_t   mutex_ate;
+
     sem_t *sem_fork;
     sem_t *sem_print;
-    sem_t *terminate;
-    sem_t *alive_philos;
-    sem_t *eat_finished_philos;
+    sem_t *sem_status;
+    sem_t *sem_died;
+    sem_t *sem_ate;
+
+    int someone_died;
+    int all_of_us_ate;
     
     t_philo *philos;
 };
 
 struct s_philo
 {
+    pid_t   process_id;
     pthread_t pthread_id;
     pthread_t observer_id;
     int id;
@@ -75,13 +83,20 @@ char	*ft_strjoin(char const *s1, char const *s2);
 t_table *table_setting(int argc, char *argv[]);
 
 t_philo *philosophers_init(t_table *table);
-int philosophers_doing(t_table *table);
 
-void    semaphore_init_on_table(t_table *table, int must_eat);
+// Semaphore
+void    semaphore_init_on_table(t_table *table);
 
-void    *pthreadding(void *data);
+// Process
+void	process_on_philosophers(t_table *table);
+
+// Pthread
+void    *someone_died_on_pthread(void *data);
+void    *allofus_ate_on_pthread(void *data);
 void    *observer(void *data);
 
+// Doing of Philosophers
+int philosophers_doing(t_philo *philo);
 int taken_a_fork(t_philo *philo);
 int eating(t_philo *philo);
 int sleeping(t_philo *philo);

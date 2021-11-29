@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 11:27:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/25 23:25:01 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/29 22:13:54 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,21 @@ int eating(t_philo *philo)
         usleep(1000);
     sem_post(philo->table->sem_fork);
     sem_post(philo->table->sem_fork);
-    return (philo->table->number_of_philos - *(int *)philo->table->alive_philos);
+    return (philo->died);
 }
 
 int must_eat_checker(t_table *table, int eat_count)
 {
-    if (table->must_eat == eat_count)
+    if (table->must_eat == -1)
+        return (0);
+    else if (table->must_eat > eat_count)
+        return (0);
+    else 
     {
-        sem_wait(table->eat_finished_philos);
+        sem_post(table->sem_ate);
+        sem_wait(table->sem_status);
+        while (table->all_of_us_ate == 0)
+            usleep(10);
         return (1);
     }
-    return (0);
 }
