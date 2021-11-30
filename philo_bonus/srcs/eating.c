@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 11:27:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/29 22:13:54 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/30 14:06:38 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ int must_eat_checker(t_table *table, int eat_count)
         return (0);
     else 
     {
+        // printf("must eat checker\n");
         sem_post(table->sem_ate);
-        sem_wait(table->sem_status);
-        while (table->all_of_us_ate == 0)
-            usleep(10);
+        // sem_wait(table->sem_status);
+        // while (table->all_of_us_ate == 0)
+        //     usleep(10);
         return (1);
     }
 }

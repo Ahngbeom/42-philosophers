@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 19:34:32 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/29 22:22:36 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/30 14:24:26 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@ void	process_on_philosophers(t_table *table)
 {
 	int i;
 
-	pthread_create(&table->mutex_died, NULL, someone_died_on_pthread, table);
-	pthread_create(&table->mutex_ate, NULL, allofus_ate_on_pthread, table);
+    pthread_create(&table->mutex_died, NULL, someone_died_on_pthread, table);
+    if (table->must_eat != -1)
+        pthread_create(&table->mutex_ate, NULL, allofus_ate_on_pthread, table);
     i = -1;
     table->begin_time = time_ms();
     while (++i < table->number_of_philos)
@@ -32,11 +33,12 @@ void	process_on_philosophers(t_table *table)
     }
     while (table->someone_died == 0 && table->all_of_us_ate == 0)
 		usleep(1000);
-	pthread_detach(table->mutex_died);
-	pthread_detach(table->mutex_ate);
+    pthread_detach(table->mutex_died);
+	if (table->must_eat != -1)
+        pthread_detach(table->mutex_ate);
 	i = -1;
 	while (++i < table->number_of_philos)
-	{
+    {
 		kill(table->philos[i].process_id, SIGTERM);
-	}
+    }
 }

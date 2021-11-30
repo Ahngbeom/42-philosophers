@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/29 22:28:20 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/30 14:24:08 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,5 @@ int    philosophers_doing(t_philo *philo)
         if (thinking(philo) != 0)
             break ;
     }
-    pthread_detach(philo->observer_id);
     return (0);
 }
