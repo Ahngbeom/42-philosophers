@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 15:58:44 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/30 16:26:42 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ char	*ft_strjoin(char const *s1, char const *s2);
 
 int millisecond_meter(void);
 void    protected_printf(t_table *table, int philo_id, char *action);
+void    exception(char *message);
+void    cleanup_table(t_table *table);
 
 void    table_setting(t_table *table, int argc, char *argv[]);
 
