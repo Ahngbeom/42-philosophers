@@ -5,40 +5,29 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 11:27:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 14:06:38 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/30 15:43:14 by bahn              #+#    #+#             */
+/*   Updated: 2021/11/30 16:04:04 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-int eating(t_philo *philo)
+void    eating(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->died_mutex);
-    ft_print(philo->table, philo->id, "is eating");
-    philo->last_eat_time = time_ms();
-    philo->eat_count++;
-    pthread_mutex_unlock(&philo->died_mutex);
-    while (time_ms() - philo->last_eat_time <= philo->table->time_to_eat)
-        usleep(1000);
-    sem_post(philo->table->sem_fork);
-    sem_post(philo->table->sem_fork);
-    return (philo->died);
-}
-
-int must_eat_checker(t_table *table, int eat_count)
-{
-    if (table->must_eat == -1)
-        return (0);
-    else if (table->must_eat > eat_count)
-        return (0);
-    else 
+    sem_wait(philo->table->sem_fork);
+    protected_printf(philo->table, philo->id, "taken a fork");
+    sem_wait(philo->table->sem_fork);
+    protected_printf(philo->table, philo->id, "taken a fork");
+    sem_wait(philo->sem_protect);
+    protected_printf(philo->table, philo->id, "is eating");
+    philo->last_eat_time = millisecond_meter();
+    sem_post(philo->sem_protect);
+    while ((millisecond_meter() - philo->last_eat_time <= philo->table->time_to_eat) && \
+            philo->table->someone_died == 0)
     {
-        // printf("must eat checker\n");
-        sem_post(table->sem_ate);
-        // sem_wait(table->sem_status);
-        // while (table->all_of_us_ate == 0)
-        //     usleep(10);
-        return (1);
+        usleep(1000);
     }
+    philo->eat_count++;
+    sem_post(philo->table->sem_fork);
+    sem_post(philo->table->sem_fork);
 }

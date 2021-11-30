@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/29 22:04:13 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/30 15:58:44 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 
 # include <pthread.h>
 # include <semaphore.h>
-# include <fcntl.h>
-# include <sys/stat.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <sys/time.h>
 # include <stdio.h>
+# include <stdlib.h> // EXIT_SUCCESS | EXIT_FAILURE
+# include <fcntl.h> // O_CREAT | O_EXCEL
+# include <string.h> // memset()
+# include <unistd.h> // usleep()
+# include <signal.h> // kill()
+# include <sys/time.h> // struct timeval
 
 # define PARENT_PROC 1
 # define CHILD_PROC 0
@@ -37,10 +36,11 @@ struct s_table
     int time_to_eat;
     int time_to_sleep;
     int must_eat;
-    int begin_time;
 
-    pthread_t   mutex_died;
-    pthread_t   mutex_ate;
+    int someone_died;
+    int all_of_us_ate;
+
+    int begin_time;
 
     sem_t *sem_fork;
     sem_t *sem_print;
@@ -48,8 +48,8 @@ struct s_table
     sem_t *sem_died;
     sem_t *sem_ate;
 
-    int someone_died;
-    int all_of_us_ate;
+    pthread_t   mutex_died;
+    pthread_t   mutex_ate;
     
     t_philo *philos;
 };
@@ -57,55 +57,39 @@ struct s_table
 struct s_philo
 {
     pid_t   process_id;
-    pthread_t pthread_id;
     pthread_t observer_id;
     int id;
     int eat_count;
     int last_eat_time;
     int timestamp;
     int died;
+    
+    sem_t *sem_protect;
     pthread_mutex_t died_mutex;
 
     t_table *table;
 };
 
-void    ft_exception(char *message);
-void    ft_error(t_table *table, char *message);
-void    ft_free(t_table *table);
-
-int	ft_strlen(char *str);
-size_t	ft_strlcpy(char *dest, char *src, size_t size);
-size_t	ft_strlcat(char *dest, char *src, size_t size);
 int	ft_atoi(char *str);
 char	*ft_itoa(int n);
+int	ft_strlen(char *str);
+size_t	ft_strlcat(char *dest, char *src, size_t size);
+size_t	ft_strlcpy(char *dest, char *src, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
 
-t_table *table_setting(int argc, char *argv[]);
+int millisecond_meter(void);
+void    protected_printf(t_table *table, int philo_id, char *action);
 
-t_philo *philosophers_init(t_table *table);
+void    table_setting(t_table *table, int argc, char *argv[]);
 
-// Semaphore
-void    semaphore_init_on_table(t_table *table);
+void    philosophers_init(t_table *table);
 
-// Process
-void	process_on_philosophers(t_table *table);
+void    create_philos_process(t_table *table);
 
-// Pthread
-void    *someone_died_on_pthread(void *data);
-void    *allofus_ate_on_pthread(void *data);
-void    *observer(void *data);
+void    philosophers_doing(t_philo *philo);
 
-// Doing of Philosophers
-int philosophers_doing(t_philo *philo);
-int taken_a_fork(t_philo *philo);
-int eating(t_philo *philo);
-int sleeping(t_philo *philo);
-int thinking(t_philo *philo);
-
-int must_eat_checker(t_table *table, int eat_count);
-
-void    ft_print(t_table *table, int philo_id, char *action);
-
-int time_ms(void);
+void    eating(t_philo *philo);
+void    sleeping(t_philo *philo);
+void    thinking(t_philo *philo);
 
 #endif

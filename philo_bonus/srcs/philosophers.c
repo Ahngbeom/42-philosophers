@@ -5,46 +5,77 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 14:24:08 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/30 14:52:38 by bahn              #+#    #+#             */
+/*   Updated: 2021/11/30 16:12:18 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-t_philo *philosophers_init(t_table *table)
+void    philosophers_init(t_table *table)
 {
-    t_philo *philos;
+    char    *sem_name;
     int i;
 
-    philos = malloc(sizeof(t_philo) * table->number_of_philos);
+    table->philos = (t_philo *)malloc(sizeof(t_philo) * table->number_of_philos);
+    if (table->philos == NULL)
+        exit(EXIT_FAILURE);
     i = -1;
     while (++i < table->number_of_philos)
     {
-        philos[i].id = i + 1;
-        philos[i].eat_count = 0;
-        philos[i].table = table;
-        philos[i].died = 0;
-        pthread_mutex_init(&philos[i].died_mutex, NULL);
+        table->philos[i].id = i + 1;
+        table->philos[i].last_eat_time = 0;
+        table->philos[i].eat_count = 0;
+        table->philos[i].table = table;
+        sem_name = ft_strjoin("/protect_", ft_itoa(table->philos[i].id));
+        table->philos[i].sem_protect = sem_open(sem_name, O_CREAT | O_EXCL, 0644, 1);
+        free(sem_name);
     }
-    return (philos);
 }
 
-int    philosophers_doing(t_philo *philo)
+static  void    *pthread_observer(void *data)
 {
-    pthread_create(&philo->observer_id, NULL, observer, philo);
+    t_philo *philo;
+
+    philo = data;
+    while (philo->table->someone_died == 0)
+    {
+        sem_wait(philo->sem_protect);
+        if (millisecond_meter() - philo->last_eat_time >= philo->table->time_to_die)
+        {
+            sem_wait(philo->table->sem_status);
+            protected_printf(philo->table, philo->id, "died");
+            philo->table->someone_died++;
+            sem_post(philo->table->sem_died);
+            sem_post(philo->sem_protect);
+            break ;
+        }
+        sem_post(philo->sem_protect);
+        usleep(100);
+    }
+    return (philo);
+}
+
+void    philosophers_doing(t_philo *philo)
+{
+    philo->last_eat_time = millisecond_meter();
+    pthread_create(&philo->observer_id, NULL, pthread_observer, philo);
+    pthread_detach(philo->observer_id);
     if (philo->id % 2 == 0)
         usleep(1000);
-    while (philo->died == 0)
+    while (philo->table->someone_died == 0)
     {
-        if (taken_a_fork(philo) != 0)
+        eating(philo);
+        if (philo->table->must_eat != -1 && \
+            philo->eat_count == philo->table->must_eat)
+            sem_post(philo->table->sem_ate);
+        if (philo->table->someone_died != 0)
             break ;
-        if (eating(philo) != 0 || must_eat_checker(philo->table, philo->eat_count))
+        sleeping(philo);
+        if (philo->table->someone_died != 0)
             break ;
-        if (sleeping(philo) != 0)
-            break ;
-        if (thinking(philo) != 0)
+        thinking(philo);
+        if (philo->table->someone_died != 0)
             break ;
     }
-    return (0);
 }

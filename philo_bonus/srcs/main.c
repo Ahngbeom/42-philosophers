@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:29:09 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/29 22:44:29 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/30 16:14:06 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int main(int argc, char *argv[])
 {
-    t_table *table;
+    t_table table;
 
     if (argc < 5 || argc > 6)
-        ft_exception("Insufficient or excessive argument are present");
-    table = table_setting(argc, argv);
-    process_on_philosophers(table);
-    printf("main terminate\n");
-    ft_free(table);
-    system("leaks philo_bonus > leaks_result && cat leaks_result | grep leaked && rm -rf leaks_result");
+        exit(EXIT_FAILURE);
+    memset(&table, 0, sizeof(t_table));
+    table_setting(&table, argc, argv);
+    philosophers_init(&table);
+    create_philos_process(&table);
+    // system("leaks philo_bonus > leaks_result && cat leaks_result | grep leaked && rm -rf leaks_result");
     return (0);
 }
