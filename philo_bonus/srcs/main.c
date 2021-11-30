@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:29:09 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 23:40:08 by bahn             ###   ########.fr       */
+/*   Updated: 2021/11/30 23:41:43 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 int main(int argc, char *argv[])
 {
     t_table table;
-    char *test = malloc(100);
 
-    test = "ASdasda";
     if (argc < 5 || argc > 6)
         exception("Invalid arguments");
     memset(&table, 0, sizeof(t_table));
