@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:52:38 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 16:12:18 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 00:09:04 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void    philosophers_init(t_table *table)
 {
     char    *sem_name;
+    char    *id;
     int i;
 
     table->philos = (t_philo *)malloc(sizeof(t_philo) * table->number_of_philos);
@@ -27,8 +28,10 @@ void    philosophers_init(t_table *table)
         table->philos[i].last_eat_time = 0;
         table->philos[i].eat_count = 0;
         table->philos[i].table = table;
-        sem_name = ft_strjoin("/protect_", ft_itoa(table->philos[i].id));
+        id = ft_itoa(table->philos[i].id);
+        sem_name = ft_strjoin("/protect_", id);
         table->philos[i].sem_protect = sem_open(sem_name, O_CREAT | O_EXCL, 0644, 1);
+        free(id);
         free(sem_name);
     }
 }
