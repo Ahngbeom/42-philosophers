@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 23:56:50 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/02 00:29:37 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_philo	*philosophers_init(t_table *table)
 void	philosophers_doing(t_table *table)
 {
 	int	i;
-	
+
 	table->begin_time = time_ms();
 	i = -1;
 	while (++i < table->number_of_philos)
@@ -54,11 +54,7 @@ void	philosophers_doing(t_table *table)
 	{
 		if (pthread_join(table->philos[i].pthread_id, NULL) != 0)
 			ft_error(table, "pthread join error");
-		// if (pthread_detach(table->philos[i].pthread_id) != 0)
-		// 	ft_error(table, "pthread detach error");
 		if (pthread_join(table->philos[i].observer_id, NULL) != 0)
 			ft_error(table, "pthread join error");
-		// if (pthread_detach(table->philos[i].observer_id) != 0)
-		// 	ft_error(table, "pthread detach error");
 	}
 }
