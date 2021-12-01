@@ -228,7 +228,7 @@ if [ "$2" -eq 3 -o "$2" -eq 0 ];then
 
     echo "\n[============[Testing philo_three]==============]\n"
 
-    target="philo_three"
+    target="philo_bonus"
     make -C "$1/$target" > /dev/null
 
     if [ "$?" -ne 0 ];then

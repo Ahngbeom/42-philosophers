@@ -1,0 +1,172 @@
+philo
+Should fail: no error message on stderr
+
+philo a a a a
+Should fail: no error message on stderr
+
+philo aaaaaaaaaaaaaaaaaaaaaaaaaaaaa a a a
+Should fail: no error message on stderr
+
+philo 10
+Should fail: no error message on stderr
+
+philo 10 10
+Should fail: no error message on stderr
+
+philo 10 10 10
+Should fail: no error message on stderr
+
+philo 10 10 10 10 10 10
+Should fail: no error message on stderr
+
+philo -1 10 10 10
+Should fail: no error message on stderr
+
+philo 10 -1 10 10
+Should fail: no error message on stderr
+
+philo 10 10 -1 10
+Should fail: no error message on stderr
+
+philo 10 10 10 -1
+Should fail: no error message on stderr
+
+philo 10 10 10 10 -1
+Should fail: no error message on stderr
+
+philo 4294967296 10 10 10
+Should fail: no error message on stderr
+
+philo 10 4294967296 10 10
+Should fail: no error message on stderr
+
+philo 10 10 4294967296 10
+Should fail: no error message on stderr
+
+philo 10 10 10 4294967296
+Should fail: no error message on stderr
+
+philo 10 10 10 10 4294967296
+Should fail: no error message on stderr
+
+philo -4294967295 10 10 10
+Should fail: no error message on stderr
+
+philo 10 -4294967295 10 10
+Should fail: no error message on stderr
+
+philo 10 10 -4294967295 10
+Should fail: no error message on stderr
+
+philo 10 10 10 -4294967295
+Should fail: no error message on stderr
+
+philo 10 10 10 10 -4294967295
+Should fail: no error message on stderr
+
+philo 0 120 60 60
+FORMAT ERROR: wrong format
+Exception : Invalid arguments
+
+
+philo 2 120 60 60
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+61 2 has taken a fork
+
+
+philo 3 120 60 60
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 3 has taken a fork
+61 3 has taken a fork
+
+
+philo 4 120 60 60
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+61 4 has taken a fork
+
+
+philo 5 120 60 60
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 5 has taken a fork
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+61 5 has taken a fork
+
+
+philo 6 120 60 60
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+0 5 has taken a fork
+0 5 has taken a fork
+0 5 is eating
+61 4 has taken a fork
+
+
+philo 7 120 60 60
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 5 has taken a fork
+0 5 has taken a fork
+0 5 is eating
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+0 7 has taken a fork
+61 6 has taken a fork
+
+
+philo 5 800 200 200
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+0 5 has taken a fork
+201 5 has taken a fork
+
+
+philo 4 410 200 200
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+201 4 has taken a fork
+
+
+philo 4 310 200 100
+LOG ERROR: Using nonexistant forks
+0 1 has taken a fork
+0 1 has taken a fork
+0 1 is eating
+0 3 has taken a fork
+0 3 has taken a fork
+0 3 is eating
+201 2 has taken a fork

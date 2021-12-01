@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 16:56:12 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 20:32:11 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,14 @@ struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				must_eat;
+	int				died_philos;
+	int				ate_philos;
 	int				begin_time;
+
 	pthread_mutex_t	*fork_mutex;
 	pthread_mutex_t	print_mutex;
 
 	t_philo			*philos;
-	int				died_philos;
 };
 
 struct s_philo

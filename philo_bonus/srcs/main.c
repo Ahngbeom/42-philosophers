@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:29:09 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 16:01:47 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 17:21:07 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	main(int argc, char *argv[])
 	t_table	table;
 
 	if (argc < 5 || argc > 6)
-		exception("Invalid arguments");
+		// exception("Invalid arguments");
+		exit(EXIT_FAILURE);
 	memset(&table, 0, sizeof(t_table));
 	table_setting(&table, argc, argv);
 	philosophers_init(&table);
