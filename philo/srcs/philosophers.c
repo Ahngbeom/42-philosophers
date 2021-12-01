@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 16:35:10 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 23:22:21 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,21 @@ void	philosophers_doing(t_table *table)
 		table->philos[i].last_eat_time = time_ms();
 		if (pthread_create(&table->philos[i].pthread_id, NULL, \
 								pthreadding, &table->philos[i]))
-			ft_error(table, "pthread create");
+			ft_error(table, "pthread create error");
 		if (pthread_create(&table->philos[i].observer_id, NULL, \
 								observer, &table->philos[i]))
-			ft_error(table, "pthread create");
+			ft_error(table, "pthread create error");
 	}
 	i = -1;
 	while (++i < table->number_of_philos)
 	{
 		if (pthread_join(table->philos[i].pthread_id, NULL) != 0)
-			ft_error(table, "pthread join");
+			ft_error(table, "pthread join error");
+		// if (pthread_detach(table->philos[i].pthread_id) != 0)
+		// 	ft_error(table, "pthread detach error");
 		if (pthread_join(table->philos[i].observer_id, NULL) != 0)
-			ft_error(table, "pthread join");
+			ft_error(table, "pthread join error");
+		// if (pthread_detach(table->philos[i].observer_id) != 0)
+		// 	ft_error(table, "pthread detach error");
 	}
 }
