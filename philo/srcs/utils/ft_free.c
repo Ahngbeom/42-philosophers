@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:29:52 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 17:00:18 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/02 00:00:08 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	ft_free(t_table *table)
 		{
 			pthread_mutex_destroy(&table->fork_mutex[i]);
 			pthread_mutex_destroy(&table->philos[i].died_mutex);
+			table->philos[i].table = NULL;
 		}
 		pthread_mutex_destroy(&table->print_mutex);
-		table->philos[i].table = NULL;
 		free(table->philos);
 	}
 }
