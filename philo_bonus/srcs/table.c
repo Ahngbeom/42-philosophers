@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:37:37 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 15:16:44 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 15:34:54 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ void    cleanup_table(t_table *table)
         free(id);
         free(sem_name);
     }
-    // free(table->philos);
+    free(table->philos);
 }
