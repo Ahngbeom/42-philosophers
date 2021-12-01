@@ -6,50 +6,50 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:41:03 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/29 15:15:25 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 16:35:45 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void    *observer(void *data)
+void	*observer(void *data)
 {
-    t_philo *philo;
+	t_philo	*philo;
 
-    philo = data;
-    while (philo->table->died_philos == 0 && philo->ate == 0)
-    {
-        pthread_mutex_lock(&philo->died_mutex);
-        if (time_ms() - philo->last_eat_time >= philo->table->time_to_die)
-        {
-            ft_print(philo->table, philo->id, "died");
-            philo->table->died_philos++;
-            pthread_mutex_unlock(&philo->died_mutex);
-            break ;
-        }
-        pthread_mutex_unlock(&philo->died_mutex);
-        usleep(10);
-    }
-    return (data);
+	philo = data;
+	while (philo->table->died_philos == 0 && philo->ate == 0)
+	{
+		pthread_mutex_lock(&philo->died_mutex);
+		if (time_ms() - philo->last_eat_time >= philo->table->time_to_die)
+		{
+			ft_print(philo->table, philo->id, "died");
+			philo->table->died_philos++;
+			pthread_mutex_unlock(&philo->died_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->died_mutex);
+		usleep(10);
+	}
+	return (data);
 }
 
-void    *pthreadding(void *data)
+void	*pthreadding(void *data)
 {
-    t_philo *philo;
+	t_philo	*philo;
 
-    philo = data;
-    if (philo->id % 2 == 0)
-        usleep(1000);
-    while (philo->table->died_philos == 0)
-    {
-        if (taken_a_fork(philo) != 0)
-            break ;
-        if (eating(philo) != 0 || must_eat_checker(philo->table, philo))
-            break ;
-        if (sleeping(philo) != 0)
-            break ;
-        if (thinking(philo) != 0)
-            break ;
-    }
-    return (data);
+	philo = data;
+	if (philo->id % 2 == 0)
+		usleep(1000);
+	while (philo->table->died_philos == 0)
+	{
+		if (taken_a_fork(philo) != 0)
+			break ;
+		if (eating(philo) != 0 || must_eat_checker(philo->table, philo))
+			break ;
+		if (sleeping(philo) != 0)
+			break ;
+		if (thinking(philo) != 0)
+			break ;
+	}
+	return (data);
 }

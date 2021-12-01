@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
-#    Updated: 2021/11/29 19:36:51 by bahn             ###   ########.fr        #
+#    Updated: 2021/12/01 16:26:25 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,22 +15,29 @@ OS			= $(shell uname -s)
 NAME 		= philo_bonus
 
 CC 			= gcc
-CFLAGS 		= -Wall -Werror -Wextra
+
+ifeq ($(OS), Linux)
+LEAK_FLAGS 	= -g3 -fsanitize=address -static-libasan
+else
+LEAK_FLAGS 	= -g3 -fsanitize=memory -static-libsan
+endif
+
+CFLAGS 		= -Wall -Werror -Wextra #$(LEAK_FLAGS)
+
 INCFLAGS 	= -I./includes
 
 RM 			= rm -rfv
 
 SRCS_PATH 	= ./srcs/
-SRCS_FNAME 	= main.c table.c philosophers.c \
-				semaphore.c process.c pthread.c \
-				taken_a_fork.c eating.c sleeping.c thinking.c \
-				time_ms.c
+SRCS_FNAME 	= main.c semaphore.c process.c pthread.c \
+				table.c philosophers.c \
+				taken_a_fork.c eating.c sleeping.c thinking.c
 
 LIBFT_PATH 	= $(addprefix $(SRCS_PATH), libft/)
-LIBFT_FNAME = ft_strlen.c ft_strlcpy.c ft_strlcat.c ft_atoi.c ft_itoa.c ft_strjoin.c
+LIBFT_FNAME = ft_atoi.c ft_itoa.c ft_strlen.c ft_strlcat.c ft_strlcpy.c ft_strjoin.c
 
 UTILS_PATH 	= $(addprefix $(SRCS_PATH), utils/)
-UTILS_FNAME = ft_error.c ft_exception.c ft_free.c ft_print.c
+UTILS_FNAME = ms_meter.c protected_printf.c exception.c exit_to_error.c
 
 SRCS 		= $(addprefix $(SRCS_PATH), $(SRCS_FNAME)) \
 				$(addprefix $(LIBFT_PATH), $(LIBFT_FNAME)) \

@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   exit_to_error.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 19:05:16 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/25 13:43:05 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/30 16:22:54 by bahn              #+#    #+#             */
+/*   Updated: 2021/12/01 16:18:15 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-void    ft_error(t_table *table, char *message)
+void	exit_to_error(t_table *table, char *message)
 {
-    printf("Error : %s\n", message);
-    // (void)message;
-    // fprintf(stderr, "Error\n");
-    ft_free(table);
-    exit(EXIT_FAILURE);
+	printf("Error : %s", message);
+	cleanup_table(table);
+	exit(EXIT_FAILURE);
 }

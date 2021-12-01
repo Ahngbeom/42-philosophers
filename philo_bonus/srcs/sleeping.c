@@ -5,18 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 11:43:49 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/29 21:48:58 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/30 15:46:57 by bahn              #+#    #+#             */
+/*   Updated: 2021/12/01 16:24:50 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-int sleeping(t_philo *philo)
+int	sleeping(t_philo *philo)
 {
-    ft_print(philo->table, philo->id, "is sleeping");
-    philo->timestamp = time_ms();
-    while (time_ms() - philo->timestamp <= philo->table->time_to_sleep)
-        usleep(1000);
-    return (philo->died);
+	philo->timestamp = ms_meter();
+	protected_printf(philo->table, philo->id, "is sleeping");
+	while (ms_meter() - philo->timestamp <= philo->table->time_to_sleep && \
+			philo->table->someone_died == 0)
+		usleep(10);
+	return (philo->table->someone_died);
 }

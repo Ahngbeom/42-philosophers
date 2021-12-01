@@ -5,40 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 11:27:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 14:06:38 by bahn             ###   ########.fr       */
+/*   Created: 2021/11/30 15:43:14 by bahn              #+#    #+#             */
+/*   Updated: 2021/12/01 17:05:07 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-int eating(t_philo *philo)
+static	void	must_eat_checker(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->died_mutex);
-    ft_print(philo->table, philo->id, "is eating");
-    philo->last_eat_time = time_ms();
-    philo->eat_count++;
-    pthread_mutex_unlock(&philo->died_mutex);
-    while (time_ms() - philo->last_eat_time <= philo->table->time_to_eat)
-        usleep(1000);
-    sem_post(philo->table->sem_fork);
-    sem_post(philo->table->sem_fork);
-    return (philo->died);
+	if (philo->table->must_eat != 0 && \
+		philo->eat_count == philo->table->must_eat)
+		sem_post(philo->table->sem_ate);
 }
 
-int must_eat_checker(t_table *table, int eat_count)
+int	eating(t_philo *philo)
 {
-    if (table->must_eat == -1)
-        return (0);
-    else if (table->must_eat > eat_count)
-        return (0);
-    else 
-    {
-        // printf("must eat checker\n");
-        sem_post(table->sem_ate);
-        // sem_wait(table->sem_status);
-        // while (table->all_of_us_ate == 0)
-        //     usleep(10);
-        return (1);
-    }
+	sem_wait(philo->sem_protect);
+	protected_printf(philo->table, philo->id, "is eating");
+	philo->last_eat_time = ms_meter();
+	philo->eat_count++;
+	sem_post(philo->sem_protect);
+	while ((ms_meter() - philo->last_eat_time <= philo->table->time_to_eat) \
+				&& philo->table->someone_died == 0)
+		usleep(10);
+	sem_post(philo->table->sem_fork);
+	sem_post(philo->table->sem_fork);
+	must_eat_checker(philo);
+	return (philo->table->someone_died);
 }

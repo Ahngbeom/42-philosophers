@@ -26,12 +26,12 @@ echo "\e[94m[+] In Case of a failed test, please check ./errors_log file for mor
 
 error_log ()
 {
-    echo "[$1-$2]: $3" > ./errors_log
+    echo "[$1-$2]: $3" >> ./errors_log
 }
 
 test_one ()
 {
-    ("$2/$1/$1" 4 310 200 100 > "./log_$1")&
+    ("$2/$1/$1" 4 310 200 100 >> "./log_$1")&
     sleep 5
     pkill $1
     output=$(grep died -m 1 "./log_$1" | awk '{print $NF}')
@@ -96,7 +96,7 @@ test_three ()
 
 test_four ()
 {
-    ("$2/$1/$1" 4 410 200 200 $3 > "./log_$1")&
+    ("$2/$1/$1" 4 410 200 200 $3 >> "./log_$1")&
     sleep 10
     pgrep $1 > /dev/null
     if [ "$?" -eq 1 ];then
@@ -200,7 +200,7 @@ if [ "$2" -eq 2 -o "$2" -eq 0 ];then
 
     echo "\n[============[Testing philo_two]==============]\n"
 
-    target="philo_two"
+    target="philo"
     make -C "$1/$target" > /dev/null
 
     if [ "$?" -ne 0 ];then
@@ -228,7 +228,7 @@ if [ "$2" -eq 3 -o "$2" -eq 0 ];then
 
     echo "\n[============[Testing philo_three]==============]\n"
 
-    target="philo_three"
+    target="philo_bonus"
     make -C "$1/$target" > /dev/null
 
     if [ "$?" -ne 0 ];then
