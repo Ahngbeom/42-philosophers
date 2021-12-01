@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   protected_printf.c                                 :+:      :+:    :+:   */
+/*   taken_a_fork.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 15:35:33 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 15:11:36 by bahn             ###   ########.fr       */
+/*   Created: 2021/12/01 13:44:47 by bahn              #+#    #+#             */
+/*   Updated: 2021/12/01 14:08:46 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-void    protected_printf(t_table *table, int philo_id, char *action)
+int taken_a_fork(t_philo *philo)
 {
-    sem_wait(table->sem_print);
-    printf("%d %d %s\n", millisecond_meter() - table->begin_time, philo_id, action);
-    sem_post(table->sem_print);
+    sem_wait(philo->table->sem_fork);
+    protected_printf(philo->table, philo->id, "taken a fork");
+    sem_wait(philo->table->sem_fork);
+    protected_printf(philo->table, philo->id, "taken a fork");
+    return (philo->table->someone_died);
 }

@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:29:09 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 23:41:43 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 11:57:19 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     memset(&table, 0, sizeof(t_table));
     table_setting(&table, argc, argv);
     philosophers_init(&table);
-    create_philos_process(&table);
+    philosophers_on_process(&table);
     cleanup_table(&table);
     
     // while (1);

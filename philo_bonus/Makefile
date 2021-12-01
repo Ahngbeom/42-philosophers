@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
-#    Updated: 2021/12/01 00:14:27 by bahn             ###   ########.fr        #
+#    Updated: 2021/12/01 13:46:31 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,18 +17,21 @@ NAME 		= philo_bonus
 CC 			= gcc
 
 ifeq ($(OS), Linux)
-CFLAGS 		= -Wall -Werror -Wextra -g3 -fsanitize=address -static-libasan
+LEAK_FLAGS 	= -g3 -fsanitize=address -static-libasan
 else
-CFLAGS 		= -Wall -Werror -Wextra -g3 -fsanitize=address -static-libsan
+LEAK_FLAGS 	= -g3 -fsanitize=memory -static-libsan
 endif
+
+CFLAGS 		= -Wall -Werror -Wextra #$(LEAK_FLAGS)
 
 INCFLAGS 	= -I./includes
 
 RM 			= rm -rfv
 
 SRCS_PATH 	= ./srcs/
-SRCS_FNAME 	= main.c table.c philosophers.c process.c \
-				eating.c sleeping.c thinking.c
+SRCS_FNAME 	= main.c semaphore.c process.c pthread.c \
+				table.c philosophers.c \
+				taken_a_fork.c eating.c sleeping.c thinking.c
 
 LIBFT_PATH 	= $(addprefix $(SRCS_PATH), libft/)
 LIBFT_FNAME = ft_atoi.c ft_itoa.c ft_strlen.c ft_strlcat.c ft_strlcpy.c ft_strjoin.c

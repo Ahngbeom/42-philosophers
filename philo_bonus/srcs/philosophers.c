@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:52:38 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 00:09:04 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 15:28:22 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void    philosophers_init(t_table *table)
 
     table->philos = (t_philo *)malloc(sizeof(t_philo) * table->number_of_philos);
     if (table->philos == NULL)
-        exit(EXIT_FAILURE);
+        exit_to_error(table, "malloc error");
     i = -1;
     while (++i < table->number_of_philos)
     {
@@ -30,55 +30,31 @@ void    philosophers_init(t_table *table)
         table->philos[i].table = table;
         id = ft_itoa(table->philos[i].id);
         sem_name = ft_strjoin("/protect_", id);
-        table->philos[i].sem_protect = sem_open(sem_name, O_CREAT | O_EXCL, 0644, 1);
+        sem_unlink(sem_name);
+        table->philos[i].sem_protect = sem_open(sem_name, O_CREAT, 0777, 1);
         free(id);
         free(sem_name);
     }
 }
 
-static  void    *pthread_observer(void *data)
-{
-    t_philo *philo;
-
-    philo = data;
-    while (philo->table->someone_died == 0)
-    {
-        sem_wait(philo->sem_protect);
-        if (millisecond_meter() - philo->last_eat_time >= philo->table->time_to_die)
-        {
-            sem_wait(philo->table->sem_status);
-            protected_printf(philo->table, philo->id, "died");
-            philo->table->someone_died++;
-            sem_post(philo->table->sem_died);
-            sem_post(philo->sem_protect);
-            break ;
-        }
-        sem_post(philo->sem_protect);
-        usleep(100);
-    }
-    return (philo);
-}
-
 void    philosophers_doing(t_philo *philo)
 {
     philo->last_eat_time = millisecond_meter();
-    pthread_create(&philo->observer_id, NULL, pthread_observer, philo);
-    pthread_detach(philo->observer_id);
+    if (pthread_create(&philo->observer_id, NULL, pthread_observer, philo) != 0)
+        exit_to_error(philo->table, "pthread create error");
+    if (pthread_detach(philo->observer_id) != 0)
+        exit_to_error(philo->table, "pthread detach error");
     if (philo->id % 2 == 0)
         usleep(1000);
     while (philo->table->someone_died == 0)
     {
-        eating(philo);
-        if (philo->table->must_eat != -1 && \
-            philo->eat_count == philo->table->must_eat)
-            sem_post(philo->table->sem_ate);
-        if (philo->table->someone_died != 0)
+        if (taken_a_fork(philo) != 0)
             break ;
-        sleeping(philo);
-        if (philo->table->someone_died != 0)
+        if (eating(philo) != 0)
             break ;
-        thinking(philo);
-        if (philo->table->someone_died != 0)
+        if (sleeping(philo) != 0)
+            break ;
+        if (thinking(philo) != 0)
             break ;
     }
 }

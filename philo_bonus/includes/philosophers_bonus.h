@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/11/30 16:26:42 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/01 15:05:23 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ struct s_table
 
     sem_t *sem_fork;
     sem_t *sem_print;
-    sem_t *sem_status;
+    sem_t *sem_preemptive;
     sem_t *sem_died;
     sem_t *sem_ate;
 
@@ -70,6 +70,7 @@ struct s_philo
     t_table *table;
 };
 
+//  Libft
 int	ft_atoi(char *str);
 char	*ft_itoa(int n);
 int	ft_strlen(char *str);
@@ -77,21 +78,35 @@ size_t	ft_strlcat(char *dest, char *src, size_t size);
 size_t	ft_strlcpy(char *dest, char *src, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
 
+//  Utils
 int millisecond_meter(void);
 void    protected_printf(t_table *table, int philo_id, char *action);
 void    exception(char *message);
+void    invalid_arguments_checker(t_table *table);
+void    exit_to_error(t_table *table, char *message);
+
+//  Table
+void    table_setting(t_table *table, int argc, char *argv[]);
 void    cleanup_table(t_table *table);
 
-void    table_setting(t_table *table, int argc, char *argv[]);
+//  Semaphore
+void    semaphore_init(t_table *table);
 
+//  Pthread
+void    *pthread_someone_died(void *data);
+void    *pthread_allofus_ate(void *data);
+void    *pthread_observer(void *data);
+
+//  Philosophers
 void    philosophers_init(t_table *table);
-
-void    create_philos_process(t_table *table);
-
+    //  Process
+void    philosophers_on_process(t_table *table);
+    //  Doing | Action 
 void    philosophers_doing(t_philo *philo);
+int taken_a_fork(t_philo *philo);
+int eating(t_philo *philo);
+int sleeping(t_philo *philo);
+int thinking(t_philo *philo);
 
-void    eating(t_philo *philo);
-void    sleeping(t_philo *philo);
-void    thinking(t_philo *philo);
 
 #endif
