@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 12:21:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 16:24:28 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/02 13:37:15 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	*pthread_someone_died(void *data)
 	table = data;
 	sem_wait(table->sem_died);
 	table->someone_died++;
+	sem_post(table->sem_ate);
 	return (table);
 }
 

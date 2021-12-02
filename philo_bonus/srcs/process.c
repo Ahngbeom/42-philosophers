@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:01:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 17:04:08 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/02 13:44:27 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void	philosophers_on_process(t_table *table)
 		exit_to_error(table, "pthread create error");
 	if (pthread_create(&table->mutex_ate, NULL, pthread_allofus_ate, table))
 		exit_to_error(table, "pthread create error");
+	if (pthread_detach(table->mutex_died))
+		exit_to_error(table, "pthread detach error");
+	if (pthread_detach(table->mutex_ate))
+		exit_to_error(table, "pthread detach error");
 	table->begin_time = ms_meter();
 	i = -1;
 	while (++i < table->number_of_philos)
