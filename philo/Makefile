@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
-#    Updated: 2021/12/02 13:53:07 by bahn             ###   ########.fr        #
+#    Updated: 2021/12/02 14:17:04 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ LEAK_FLAGS 	= -g3 -fsanitize=memory -static-libsan
 endif
 
 CFLAGS 		= -Wall -Werror -Wextra #$(LEAK_FLAGS)
+
 INCFLAGS 	= -I./includes
 
 RM 			= rm -fv
