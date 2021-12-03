@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:29:09 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/02 15:20:49 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 00:34:01 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ int	main(int argc, char *argv[])
 	if (table->philos == NULL)
 		ft_error(table, "malloc error");
 	philosophers_doing(table);
-	ft_free(table);
+	table_cleaning(table);
 	return (0);
 }

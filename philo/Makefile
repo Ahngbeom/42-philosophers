@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
-#    Updated: 2021/12/02 14:17:04 by bahn             ###   ########.fr        #
+#    Updated: 2021/12/04 01:01:25 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,7 @@ SRCS_FNAME 	= main.c table.c philosophers.c pthread.c \
 				time_ms.c
 
 UTILS_PATH 	= $(addprefix $(SRCS_PATH), utils/)
-UTILS_FNAME = ft_atoi.c ft_print.c \
-				ft_error.c ft_exception.c ft_free.c
+UTILS_FNAME = ft_atoi.c ft_print.c ft_error.c ft_exception.c
 
 SRCS 		= $(addprefix $(SRCS_PATH), $(SRCS_FNAME)) \
 				$(addprefix $(UTILS_PATH), $(UTILS_FNAME))

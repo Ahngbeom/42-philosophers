@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:29:08 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/03 22:19:55 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 01:01:09 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,24 @@ t_table	*table_setting(int argc, char *argv[])
 	pthread_mutex_init(&table->preemptive_mutex, NULL);
 	pthread_mutex_init(&table->print_mutex, NULL);
 	return (table);
+}
+
+void	table_cleaning(t_table *table)
+{
+	int	i;
+
+	if (table->philos != NULL)
+	{
+		i = -1;
+		while (++i < table->number_of_philos)
+		{
+			pthread_mutex_destroy(&table->fork_mutex[i]);
+			pthread_mutex_destroy(&table->philos[i].died_mutex);
+			table->philos[i].table = NULL;
+		}
+		pthread_mutex_destroy(&table->print_mutex);
+		free(table->philos);
+	}
+	free(table->fork_mutex);
+	free(table);
 }
