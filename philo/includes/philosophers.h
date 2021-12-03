@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 20:32:11 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/03 22:19:41 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ struct s_table
 	int				must_eat;
 	int				died_philos;
 	int				ate_philos;
-	int				begin_time;
+	// int				begin_time;
+	struct timeval	begin_time;
 
 	pthread_mutex_t	*fork_mutex;
+	pthread_mutex_t	preemptive_mutex;
 	pthread_mutex_t	print_mutex;
 
 	t_philo			*philos;
@@ -46,9 +48,12 @@ struct s_philo
 	pthread_t		observer_id;
 	int				id;
 	int				eat_count;
-	int				last_eat_time;
+	// int				last_eat_time;
+	struct timeval	last_eat_time;
 	int				ate;
-	int				timestamp;
+	// int				timestamp;
+	struct timeval	timestamp;
+	
 	pthread_mutex_t	died_mutex;
 
 	t_table			*table;
@@ -63,6 +68,7 @@ void	invalid_arguments_checker(t_table *table);
 int		must_eat_checker(t_table *table, t_philo *philo);
 void	ft_print(t_table *table, int philo_id, char *action);
 int		time_ms(void);
+int	timems_diff(struct timeval time);
 
 //	Table
 t_table	*table_setting(int argc, char *argv[]);

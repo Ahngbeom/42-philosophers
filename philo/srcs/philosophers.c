@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/02 00:29:37 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/03 22:09:10 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ void	philosophers_doing(t_table *table)
 {
 	int	i;
 
-	table->begin_time = time_ms();
+	// table->begin_time = time_ms();
+	gettimeofday(&table->begin_time, NULL);
 	i = -1;
 	while (++i < table->number_of_philos)
 	{
-		table->philos[i].last_eat_time = time_ms();
+		// table->philos[i].last_eat_time = table->begin_time;
+		gettimeofday(&table->philos[i].last_eat_time, NULL);
 		if (pthread_create(&table->philos[i].pthread_id, NULL, \
 								pthreadding, &table->philos[i]))
 			ft_error(table, "pthread create error");

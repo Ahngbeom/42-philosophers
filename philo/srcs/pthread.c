@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:41:03 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 16:35:45 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/03 23:11:24 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*observer(void *data)
 	while (philo->table->died_philos == 0 && philo->ate == 0)
 	{
 		pthread_mutex_lock(&philo->died_mutex);
-		if (time_ms() - philo->last_eat_time >= philo->table->time_to_die)
+		if (timems_diff(philo->last_eat_time) >= philo->table->time_to_die)
 		{
 			ft_print(philo->table, philo->id, "died");
 			philo->table->died_philos++;
@@ -28,7 +28,7 @@ void	*observer(void *data)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->died_mutex);
-		usleep(10);
+		usleep(1000);
 	}
 	return (data);
 }
@@ -39,7 +39,7 @@ void	*pthreadding(void *data)
 
 	philo = data;
 	if (philo->id % 2 == 0)
-		usleep(1000);
+		usleep(1000 * philo->table->time_to_eat);
 	while (philo->table->died_philos == 0)
 	{
 		if (taken_a_fork(philo) != 0)
