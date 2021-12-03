@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/03 22:09:10 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 01:19:28 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_philo	*philosophers_init(t_table *table)
 	{
 		philos[i].id = i + 1;
 		philos[i].eat_count = 0;
-		philos[i].ate = 0;
+		philos[i].ate_it_all = 0;
 		philos[i].table = table;
 		if (pthread_mutex_init(&table->fork_mutex[i], NULL) != 0)
 			ft_error(table, "pthread mutex init");
@@ -37,12 +37,10 @@ void	philosophers_doing(t_table *table)
 {
 	int	i;
 
-	// table->begin_time = time_ms();
 	gettimeofday(&table->begin_time, NULL);
 	i = -1;
 	while (++i < table->number_of_philos)
 	{
-		// table->philos[i].last_eat_time = table->begin_time;
 		gettimeofday(&table->philos[i].last_eat_time, NULL);
 		if (pthread_create(&table->philos[i].pthread_id, NULL, \
 								pthreadding, &table->philos[i]))
@@ -54,9 +52,9 @@ void	philosophers_doing(t_table *table)
 	i = -1;
 	while (++i < table->number_of_philos)
 	{
-		if (pthread_join(table->philos[i].pthread_id, NULL) != 0)
+		if (pthread_join(table->philos[i].pthread_id, NULL))
 			ft_error(table, "pthread join error");
-		if (pthread_join(table->philos[i].observer_id, NULL) != 0)
+		if (pthread_join(table->philos[i].observer_id, NULL))
 			ft_error(table, "pthread join error");
 	}
 }

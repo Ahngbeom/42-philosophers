@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/22 14:40:23 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 17:02:41 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 01:36:42 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_atoi(char *str)
 		if (nbr * sign > 2147483647)
 			return (-1);
 		else if (nbr * sign < -2147483648)
-			return (0);
+			return (-1);
 		str++;
 	}
 	return (nbr * sign);

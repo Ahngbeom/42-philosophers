@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:41:03 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/03 23:11:24 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 01:32:11 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	*observer(void *data)
 	t_philo	*philo;
 
 	philo = data;
-	while (philo->table->died_philos == 0 && philo->ate == 0)
+	while (philo->table->died_philos == 0 && philo->ate_it_all == 0)
 	{
 		pthread_mutex_lock(&philo->died_mutex);
-		if (timems_diff(philo->last_eat_time) >= philo->table->time_to_die)
+		if (mstime_diff(philo->last_eat_time) >= philo->table->time_to_die)
 		{
-			ft_print(philo->table, philo->id, "died");
+			ft_printf(philo->table, philo->id, "died");
 			philo->table->died_philos++;
 			pthread_mutex_unlock(&philo->died_mutex);
 			break ;

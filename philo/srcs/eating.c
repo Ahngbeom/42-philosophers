@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 11:27:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/03 22:23:23 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 01:33:16 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	eating(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->died_mutex);
-	ft_print(philo->table, philo->id, "is eating");
+	ft_printf(philo->table, philo->id, "is eating");
 	gettimeofday(&philo->last_eat_time, NULL);
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->died_mutex);
-	while (timems_diff(philo->last_eat_time) <= philo->table->time_to_eat && \
+	while (mstime_diff(philo->last_eat_time) <= philo->table->time_to_eat && \
 			philo->table->ate_philos < philo->table->number_of_philos)
-		usleep(10);
+		usleep(100);
 	pthread_mutex_unlock(\
 		&philo->table->fork_mutex[philo->id % philo->table->number_of_philos] \
 	);
@@ -37,11 +37,8 @@ int	must_eat_checker(t_table *table, t_philo *philo)
 		return (0);
 	else
 	{
-		philo->ate++;
+		philo->ate_it_all++;
 		philo->table->ate_philos++;
-		if (philo->table->ate_philos >= philo->table->number_of_philos)
-			return (1);
-		else
-			return (0);
+		return (1);
 	}
 }

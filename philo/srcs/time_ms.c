@@ -6,13 +6,13 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 03:29:12 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 00:57:04 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 01:15:46 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	timems_diff(struct timeval time)
+int	mstime_diff(struct timeval time)
 {
 	struct timeval	now;
 

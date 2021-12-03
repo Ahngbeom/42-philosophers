@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:29:08 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:01:09 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 01:39:35 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,12 @@ t_table	*table_setting(int argc, char *argv[])
 	if (argc == 5)
 		table->must_eat = 0;
 	else
-	{
 		table->must_eat = ft_atoi(argv[5]);
-		if (table->must_eat == 0)
-			exit(EXIT_SUCCESS);
-	}
 	invalid_arguments_checker(table);
 	table->died_philos = 0;
 	table->ate_philos = 0;
 	table->fork_mutex = \
 		malloc(sizeof(pthread_mutex_t) * table->number_of_philos);
-	pthread_mutex_init(&table->preemptive_mutex, NULL);
 	pthread_mutex_init(&table->print_mutex, NULL);
 	return (table);
 }
