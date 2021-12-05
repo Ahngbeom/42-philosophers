@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:52:38 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/02 13:24:30 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/05 14:48:21 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ void	philosophers_init(t_table *table)
 void	philosophers_doing(t_philo *philo)
 {
 	philo->last_eat_time = ms_meter();
-	if (pthread_create(&philo->observer_id, NULL, pthread_observer, philo) != 0)
-		exit_to_error(philo->table, "pthread create error");
-	if (pthread_detach(philo->observer_id) != 0)
-		exit_to_error(philo->table, "pthread detach error");
 	if (philo->id % 2 == 0)
-		usleep(1000);
-	while (philo->table->someone_died == 0)
+		usleep(1000 * philo->table->time_to_eat);
+	if (pthread_create(&philo->observer_id, NULL, pthread_observer, philo))
+		exit_to_error(philo->table, "pthread create error");
+	if (pthread_detach(philo->observer_id))
+		exit_to_error(philo->table, "pthread detach error");
+	while (philo->table->someone_died == 0 && philo->table->ate_all == 0)
 	{
 		if (taken_a_fork(philo) != 0)
 			break ;

@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:25:34 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/02 13:39:47 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/05 14:54:17 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	semaphore_init(t_table *table)
 
 void	semaphore_release(t_table *table)
 {
-	if (table->all_of_us_ate == 0)
+	if (table->ate_all == 0)
 		sem_post(table->sem_ate);
-	else
+	if (table->someone_died == 0)
 		sem_post(table->sem_died);
 	sem_close(table->sem_fork);
 	sem_unlink("/fork");

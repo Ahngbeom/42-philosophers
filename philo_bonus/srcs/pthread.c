@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 12:21:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/02 13:37:15 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/05 14:47:42 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*pthread_allofus_ate(void *data)
 			return (table);
 	}
 	table->someone_died++;
-	table->all_of_us_ate++;
+	table->ate_all++;
 	return (table);
 }
 
@@ -49,7 +49,8 @@ void	*pthread_observer(void *data)
 	while (philo->table->someone_died == 0)
 	{
 		sem_wait(philo->sem_protect);
-		if (ms_meter() - philo->last_eat_time >= philo->table->time_to_die)
+		if (philo->table->someone_died == 0 && \
+				ms_meter() - philo->last_eat_time >= philo->table->time_to_die)
 		{
 			sem_wait(philo->table->sem_preemptive);
 			protected_printf(philo->table, philo->id, "died");
@@ -59,7 +60,7 @@ void	*pthread_observer(void *data)
 			break ;
 		}
 		sem_post(philo->sem_protect);
-		usleep(10);
+		usleep(1000);
 	}
 	return (philo);
 }

@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:37:37 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/02 13:16:42 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/04 22:42:29 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	table_setting(t_table *table, int argc, char *argv[])
 	}
 	invalid_arguments_checker(table);
 	table->someone_died = 0;
-	table->all_of_us_ate = 0;
+	table->ate_all = 0;
 	semaphore_init(table);
 }
 

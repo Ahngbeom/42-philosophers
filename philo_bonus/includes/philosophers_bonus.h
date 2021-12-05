@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 17:03:02 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/05 14:48:26 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h> // usleep()
 # include <signal.h> // kill()
 # include <sys/time.h> // struct timeval
+# include <sys/wait.h> // waitpid()
 
 # define PARENT_PROC 1
 # define CHILD_PROC 0
@@ -39,7 +40,7 @@ struct s_table
 	int			must_eat;
 
 	int			someone_died;
-	int			all_of_us_ate;
+	int			ate_all;
 
 	int			begin_time;
 
@@ -49,8 +50,8 @@ struct s_table
 	sem_t		*sem_died;
 	sem_t		*sem_ate;
 
-	pthread_t	mutex_died;
-	pthread_t	mutex_ate;
+	pthread_t	died_pthread;
+	pthread_t	atr_pthread;
 
 	t_philo		*philos;
 };
@@ -63,11 +64,8 @@ struct s_philo
 	int				eat_count;
 	int				last_eat_time;
 	int				timestamp;
-	int				died;
 
 	sem_t			*sem_protect;
-
-	pthread_mutex_t	died_mutex;
 
 	t_table			*table;
 };
@@ -88,6 +86,7 @@ int		ft_strlen(char *str);
 size_t	ft_strlcat(char *dest, char *src, size_t size);
 size_t	ft_strlcpy(char *dest, char *src, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strncmp(char *s1, char *s2, size_t n);
 
 //  Utils
 int		ms_meter(void);
