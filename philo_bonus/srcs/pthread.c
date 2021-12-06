@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 12:21:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/07 02:29:31 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 02:50:36 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*pthread_observer(void *data)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->mutex_protect);
-		usleep(100);
+		usleep(1000);
 	}
 	pthread_mutex_unlock(&philo->mutex_protect);
 	return (philo);
