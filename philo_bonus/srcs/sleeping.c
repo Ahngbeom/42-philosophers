@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:46:57 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/05 14:46:54 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/06 19:29:58 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 int	sleeping(t_philo *philo)
 {
-	philo->timestamp = ms_meter();
+	t_timeval	timestamp;
+
+	gettimeofday(&timestamp, NULL);
 	protected_printf(philo->table, philo->id, "is sleeping");
 	while (philo->table->someone_died == 0 && \
-			ms_meter() - philo->timestamp <= philo->table->time_to_sleep)
-		usleep(1000);
+			timems_meter(&timestamp) <= philo->table->time_to_sleep)
+		usleep(100);
 	return (philo->table->someone_died);
 }
