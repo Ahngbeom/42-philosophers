@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/05 14:48:26 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 01:17:18 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,20 @@
 # include <unistd.h> // usleep()
 # include <signal.h> // kill()
 # include <sys/time.h> // struct timeval
-# include <sys/wait.h> // waitpid()
+# include <sys/wait.h> // waitpid(), WNOHANG, WIFEXITED(status)
 
 # define PARENT_PROC 1
 # define CHILD_PROC 0
 
+typedef struct timeval	t_timeval;
+
 typedef struct s_table	t_table;
 typedef struct s_philo	t_philo;
-typedef struct s_sem	t_sem;
 
 struct s_table
 {
+	pid_t		*philos_pid;
+
 	int			number_of_philos;
 	int			time_to_die;
 	int			time_to_eat;
@@ -40,43 +43,32 @@ struct s_table
 	int			must_eat;
 
 	int			someone_died;
-	int			ate_all;
+	int			ate_philos;
 
-	int			begin_time;
+	t_timeval	begin_time;
 
 	sem_t		*sem_fork;
 	sem_t		*sem_print;
-	sem_t		*sem_preemptive;
-	sem_t		*sem_died;
-	sem_t		*sem_ate;
+	sem_t		*sem_end;
 
-	pthread_t	died_pthread;
-	pthread_t	atr_pthread;
+	pthread_t	pthread_id;
 
 	t_philo		*philos;
 };
 
 struct s_philo
 {
-	pid_t			process_id;
 	pthread_t		observer_id;
 	int				id;
-	int				eat_count;
-	int				last_eat_time;
-	int				timestamp;
 
-	sem_t			*sem_protect;
+	int				died;
+
+	t_timeval		last_eat_time;
+	int				eat_count;
+
+	pthread_mutex_t	mutex_protect;
 
 	t_table			*table;
-};
-
-struct s_sem
-{
-	sem_t		*sem_fork;
-	sem_t		*sem_print;
-	sem_t		*sem_preemptive;
-	sem_t		*sem_died;
-	sem_t		*sem_ate;
 };
 
 //  Libft
@@ -89,7 +81,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strncmp(char *s1, char *s2, size_t n);
 
 //  Utils
-int		ms_meter(void);
+int		timems_meter(t_timeval *time);
 void	protected_printf(t_table *table, int philo_id, char *action);
 void	exception(char *message);
 void	invalid_arguments_checker(t_table *table);

@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:52:38 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/05 14:48:21 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 02:27:03 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	philosophers_init(t_table *table)
 {
-	char	*sem_name;
-	char	*id;
 	int		i;
 
 	table->philos = malloc(sizeof(t_philo) * table->number_of_philos);
@@ -25,28 +23,23 @@ void	philosophers_init(t_table *table)
 	while (++i < table->number_of_philos)
 	{
 		table->philos[i].id = i + 1;
-		table->philos[i].last_eat_time = 0;
 		table->philos[i].eat_count = 0;
+		table->philos[i].died = 0;
 		table->philos[i].table = table;
-		id = ft_itoa(table->philos[i].id);
-		sem_name = ft_strjoin("/protect_", id);
-		sem_unlink(sem_name);
-		table->philos[i].sem_protect = sem_open(sem_name, O_CREAT, 0777, 1);
-		free(id);
-		free(sem_name);
+		pthread_mutex_init(&table->philos[i].mutex_protect, NULL);
 	}
 }
 
 void	philosophers_doing(t_philo *philo)
 {
-	philo->last_eat_time = ms_meter();
 	if (philo->id % 2 == 0)
 		usleep(1000 * philo->table->time_to_eat);
 	if (pthread_create(&philo->observer_id, NULL, pthread_observer, philo))
 		exit_to_error(philo->table, "pthread create error");
 	if (pthread_detach(philo->observer_id))
 		exit_to_error(philo->table, "pthread detach error");
-	while (philo->table->someone_died == 0 && philo->table->ate_all == 0)
+	gettimeofday(&philo->last_eat_time, NULL);
+	while (philo->table->someone_died == 0)
 	{
 		if (taken_a_fork(philo) != 0)
 			break ;
@@ -57,4 +50,8 @@ void	philosophers_doing(t_philo *philo)
 		if (thinking(philo) != 0)
 			break ;
 	}
+	if (philo->died)
+		exit(EXIT_SUCCESS);
+	else
+		exit(EXIT_FAILURE);
 }

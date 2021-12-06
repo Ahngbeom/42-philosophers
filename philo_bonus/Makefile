@@ -6,7 +6,7 @@
 #    By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/20 14:51:02 by bahn              #+#    #+#              #
-#    Updated: 2021/12/05 13:24:05 by bahn             ###   ########.fr        #
+#    Updated: 2021/12/07 02:30:46 by bahn             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,22 +22,21 @@ else
 LEAK_FLAGS 	= -g3 -fsanitize=address -static-libsan
 endif
 
-CFLAGS 		= -Wall -Werror -Wextra $(LEAK_FLAGS)
+CFLAGS 		= -Wall -Werror -Wextra #$(LEAK_FLAGS)
 
 INCFLAGS 	= -I./includes
 
 RM 			= rm -rfv
 
 SRCS_PATH 	= ./srcs/
-SRCS_FNAME 	= main.c semaphore.c process.c pthread.c \
-				table.c philosophers.c \
+SRCS_FNAME 	= main.c table.c philosophers.c semaphore.c process.c pthread.c \
 				taken_a_fork.c eating.c sleeping.c thinking.c
 
 LIBFT_PATH 	= $(addprefix $(SRCS_PATH), libft/)
 LIBFT_FNAME = ft_atoi.c ft_itoa.c ft_strlen.c ft_strlcat.c ft_strlcpy.c ft_strjoin.c ft_strncmp.c
 
 UTILS_PATH 	= $(addprefix $(SRCS_PATH), utils/)
-UTILS_FNAME = ms_meter.c protected_printf.c exception.c exit_to_error.c
+UTILS_FNAME = exception.c exit_to_error.c timems_meter.c protected_printf.c
 
 SRCS 		= $(addprefix $(SRCS_PATH), $(SRCS_FNAME)) \
 				$(addprefix $(LIBFT_PATH), $(LIBFT_FNAME)) \

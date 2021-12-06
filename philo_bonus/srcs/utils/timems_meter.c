@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_meter.c                                         :+:      :+:    :+:   */
+/*   timems_meter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:20:17 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 16:23:39 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/06 11:06:36 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
 
-int	ms_meter(void)
+int	timems_meter(t_timeval *time)
 {
-	struct timeval	timestamp;
+	struct timeval	now;
 
-	gettimeofday(&timestamp, NULL);
-	return (timestamp.tv_sec * 1000 + timestamp.tv_usec / 1000);
+	gettimeofday(&now, NULL);
+	return (((now.tv_sec - time->tv_sec) * 1000) \
+				+ ((now.tv_usec - time->tv_usec) / 1000));
 }
