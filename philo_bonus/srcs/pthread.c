@@ -6,11 +6,19 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 12:21:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/07 13:53:30 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:15:18 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers_bonus.h"
+
+static	int	must_eat_checker(int must_eat, int eat_count)
+{
+	if (must_eat != 0 && eat_count >= must_eat)
+		return (1);
+	else
+		return (0);
+}
 
 void	*pthread_observer(void *data)
 {
@@ -20,11 +28,8 @@ void	*pthread_observer(void *data)
 	while (philo->table->someone_died == 0)
 	{
 		pthread_mutex_lock(&philo->mutex_protect);
-		if (philo->table->must_eat != 0 && \
-			philo->eat_count >= philo->table->must_eat)
-		{
+		if (must_eat_checker(philo->table->must_eat, philo->eat_count))
 			break ;
-		}
 		if (timems_meter(&philo->last_eat_time) >= philo->table->time_to_die)
 		{
 			protected_printf(philo->table, philo->id, "died");

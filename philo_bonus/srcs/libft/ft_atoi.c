@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:43:51 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/07 01:09:00 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:07:52 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,6 @@ int	ft_atoi(char *str)
 	sign = 1;
 	nbr = 0;
 	str = ft_isspace(str);
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			return (-1);
-		else if (*str == '+')
-			sign *= 1;
-		str++;
-	}
 	while ((*str != '\0') && (*str >= '0' && *str <= '9'))
 	{
 		nbr = (nbr * 10) + (*str - 48);

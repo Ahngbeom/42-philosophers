@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:32:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:35:03 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:10:30 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	invalid_arguments_checker(t_table *table)
 		table->time_to_sleep <= 60 || \
 		table->must_eat < 0)
 	{
-		free(table);
 		ft_exception("Invalid arguments");
 	}
 }
