@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 16:22:54 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 22:31:26 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 14:07:27 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	exit_to_error(t_table *table, char *message)
 {
-	cleanup_table(table);
+	if (table != NULL)
+		cleanup_table(table);
 	printf("Error : %s\n", message);
 	exit(EXIT_FAILURE);
 }

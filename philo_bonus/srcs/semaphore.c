@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:25:34 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/06 20:00:42 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 14:10:56 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 void	semaphore_init(t_table *table)
 {
 	sem_unlink("/fork");
-	table->sem_fork = sem_open("/fork", O_CREAT, 0777, table->number_of_philos);
+	table->sem_fork = \
+			sem_open("/fork", O_CREAT | O_EXCL, 0777, table->number_of_philos);
 	sem_unlink("/print");
-	table->sem_print = sem_open("/print", O_CREAT, 0777, 1);
+	table->sem_print = sem_open("/print", O_CREAT | O_EXCL, 0777, 1);
 	sem_unlink("/end");
-	table->sem_end = sem_open("/end", O_CREAT, 0777, 0);
+	table->sem_end = sem_open("/end", O_CREAT | O_EXCL, 0777, 0);
 }
 
 void	semaphore_release(t_table *table)

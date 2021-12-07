@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:02:55 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:19:28 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 14:39:09 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_philo	*philosophers_init(t_table *table)
 	int		i;
 
 	philos = malloc(sizeof(t_philo) * table->number_of_philos);
+	if (philos == NULL)
+		ft_error(table, "malloc error");
 	i = -1;
 	while (++i < table->number_of_philos)
 	{

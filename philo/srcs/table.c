@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 17:29:08 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:39:35 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 14:45:44 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ t_table	*table_setting(int argc, char *argv[])
 	table->ate_philos = 0;
 	table->fork_mutex = \
 		malloc(sizeof(pthread_mutex_t) * table->number_of_philos);
-	pthread_mutex_init(&table->print_mutex, NULL);
+	if (table->fork_mutex == NULL)
+		ft_error(table, "malloc error");
+	if (pthread_mutex_init(&table->print_mutex, NULL))
+		ft_error(table, "pthread mutex init error");
 	return (table);
 }
 
@@ -38,18 +41,22 @@ void	table_cleaning(t_table *table)
 {
 	int	i;
 
-	if (table->philos != NULL)
+	if (table != NULL)
 	{
-		i = -1;
-		while (++i < table->number_of_philos)
+		if (table->philos != NULL)
 		{
-			pthread_mutex_destroy(&table->fork_mutex[i]);
-			pthread_mutex_destroy(&table->philos[i].died_mutex);
-			table->philos[i].table = NULL;
+			i = -1;
+			while (++i < table->number_of_philos)
+			{
+				pthread_mutex_destroy(&table->fork_mutex[i]);
+				pthread_mutex_destroy(&table->philos[i].died_mutex);
+				table->philos[i].table = NULL;
+			}
+			pthread_mutex_destroy(&table->print_mutex);
+			free(table->philos);
 		}
-		pthread_mutex_destroy(&table->print_mutex);
-		free(table->philos);
+		if (table->fork_mutex != NULL)
+			free(table->fork_mutex);
+		free(table);
 	}
-	free(table->fork_mutex);
-	free(table);
 }

@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:52:38 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/07 13:53:23 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 14:31:49 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	philosophers_init(t_table *table)
 		table->philos[i].died = 0;
 		table->philos[i].ate = 0;
 		table->philos[i].table = table;
-		pthread_mutex_init(&table->philos[i].mutex_protect, NULL);
+		if (pthread_mutex_init(&table->philos[i].mutex_protect, NULL))
+			exit_to_error(table, "mutex init error");
 	}
 }
 
@@ -35,9 +36,6 @@ void	philosophers_doing(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 		usleep(1000 * philo->table->time_to_eat);
-	if (philo->table->number_of_philos % 2 == 1 && \
-			philo->id == philo->table->number_of_philos)
-		usleep(1000 * (philo->table->time_to_eat + philo->table->time_to_sleep));
 	if (pthread_create(&philo->observer_id, NULL, pthread_observer, philo))
 		exit_to_error(philo->table, "pthread create error");
 	if (pthread_detach(philo->observer_id))
