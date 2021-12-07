@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:43:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/07 02:50:27 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 13:53:44 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static	int	must_eat_checker(t_philo *philo)
 	if (philo->table->must_eat != 0 && \
 		philo->eat_count == philo->table->must_eat)
 	{
+		philo->ate++;
+		sem_post(philo->table->sem_end);
 		return (1);
 	}
 	return (0);

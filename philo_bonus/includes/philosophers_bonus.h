@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/07 01:17:18 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 13:34:07 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ struct s_philo
 	int				id;
 
 	int				died;
+	int				ate;
 
 	t_timeval		last_eat_time;
 	int				eat_count;

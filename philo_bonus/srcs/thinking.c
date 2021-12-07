@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:49:06 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/01 16:25:45 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 13:43:05 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 int	thinking(t_philo *philo)
 {
 	protected_printf(philo->table, philo->id, "is thinking");
+	usleep(1000);
 	return (philo->table->someone_died);
 }

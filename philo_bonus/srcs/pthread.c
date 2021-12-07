@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 12:21:43 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/07 02:50:36 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 13:53:30 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	*pthread_observer(void *data)
 		if (philo->table->must_eat != 0 && \
 			philo->eat_count >= philo->table->must_eat)
 		{
-			sem_post(philo->table->sem_end);
 			break ;
 		}
 		if (timems_meter(&philo->last_eat_time) >= philo->table->time_to_die)
@@ -38,5 +37,9 @@ void	*pthread_observer(void *data)
 		usleep(1000);
 	}
 	pthread_mutex_unlock(&philo->mutex_protect);
+	if (philo->died)
+		exit(EXIT_SUCCESS);
+	if (philo->ate)
+		exit(EXIT_FAILURE);
 	return (philo);
 }
