@@ -21,7 +21,8 @@ if [ "$#" -gt 1 ]; then
 	printf "Too many parameters. Please only provide path to philo executable.\n"
 	exit
 elif [ "$#"  -lt 1 ]; then
-	set $1 ../../philo/philo
+	# set $1 ../../philo/philo
+	set $1 ../../philo_bonus/philo_bonus
 fi
 
 # checks if given executable path and file is valid.

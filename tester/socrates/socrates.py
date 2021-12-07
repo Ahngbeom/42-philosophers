@@ -173,9 +173,9 @@ def test_program(binary):
     print(f"{bcolors.WARNING}{config.ODD_NUMBER_TEST}{bcolors.ENDC}     ", flush=True)
     if run_long_test(binary, config.ODD_NUMBER_TEST, "performance_2") is False:
         return False
-    print(f"\n{bcolors.BOLD}DEATH TIMING{bcolors.ENDC}\n")
-    if run_starvation_measures(binary) is False:
-        return False
+    # print(f"\n{bcolors.BOLD}DEATH TIMING{bcolors.ENDC}\n")
+    # if run_starvation_measures(binary) is False:
+    #     return False
     return True
 
 
