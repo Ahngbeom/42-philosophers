@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time_ms.c                                          :+:      :+:    :+:   */
+/*   timems_meter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 03:29:12 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:15:46 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:00:42 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	mstime_diff(struct timeval time)
+int	timems_meter(struct timeval time)
 {
 	struct timeval	now;
 

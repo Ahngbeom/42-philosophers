@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 11:27:14 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:33:16 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:00:23 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	eating(t_philo *philo)
 	gettimeofday(&philo->last_eat_time, NULL);
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->died_mutex);
-	while (mstime_diff(philo->last_eat_time) <= philo->table->time_to_eat && \
+	while (timems_meter(philo->last_eat_time) <= philo->table->time_to_eat && \
 			philo->table->ate_philos < philo->table->number_of_philos)
 		usleep(100);
 	pthread_mutex_unlock(\

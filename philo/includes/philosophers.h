@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 15:27:24 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:19:29 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:00:15 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ int		ft_atoi(char *str);
 void	ft_printf(t_table *table, int philo_id, char *action);
 void	invalid_arguments_checker(t_table *table);
 int		must_eat_checker(t_table *table, t_philo *philo);
-int		mstime_diff(struct timeval time);
+int		timems_meter(struct timeval time);
 
 //	Table
-t_table	*table_setting(int argc, char *argv[]);
+void	table_setting(t_table *table, int argc, char *argv[]);
 void	table_cleaning(t_table *table);
 
 //	Philosophers
-t_philo	*philosophers_init(t_table *table);
+void	philosophers_init(t_table *table);
 void	philosophers_doing(t_table *table);
 	//	Doing | Action
 int		taken_a_fork(t_philo *philo);

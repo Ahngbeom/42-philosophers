@@ -6,7 +6,7 @@
 /*   By: bahn <bahn@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 19:41:03 by bahn              #+#    #+#             */
-/*   Updated: 2021/12/04 01:32:11 by bahn             ###   ########.fr       */
+/*   Updated: 2021/12/07 15:00:22 by bahn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*observer(void *data)
 	while (philo->table->died_philos == 0 && philo->ate_it_all == 0)
 	{
 		pthread_mutex_lock(&philo->died_mutex);
-		if (mstime_diff(philo->last_eat_time) >= philo->table->time_to_die)
+		if (timems_meter(philo->last_eat_time) >= philo->table->time_to_die)
 		{
 			ft_printf(philo->table, philo->id, "died");
 			philo->table->died_philos++;
