@@ -1,4 +1,7 @@
-# Philosopher
+
+
+# Philosopher  [![bahn's 42Project Score](https://badge42.herokuapp.com/api/project/bahn/philosophers)](https://github.com/JaeSeoKim/badge42)
+
 
 4개 또는 5개의 인자를 입력해주세요.
 
