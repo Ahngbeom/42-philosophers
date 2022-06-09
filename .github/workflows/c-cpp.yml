@@ -13,13 +13,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: make
-      run: make
-    - name: make all
-      run: make all
-    - name: make re
-      run: make re
-    - name: make clean
-      run: make clean
-    - name: make fclean
-      run: make fclean
+    - name: make -C philo
+      run: make -C philo
+    - name: make all -C philo
+      run: make all -C philo
+    - name: make re -C philo
+      run: make re -C philo
+    - name: make clean -C philo
+      run: make clean -C philo
+    - name: make fclean -C philo
+      run: make fclean -C philo
+    - name: make -C philo_bonus
+      run: make -C philo_bonus
+    - name: make all -C philo_bonus
+      run: make all -C philo_bonus
+    - name: make re -C philo_bonus
+      run: make re -C philo_bonus
+    - name: make clean -C philo_bonus
+      run: make clean -C philo_bonus
+    - name: make fclean -C philo_bonus
+      run: make fclean -C philo_bonus
